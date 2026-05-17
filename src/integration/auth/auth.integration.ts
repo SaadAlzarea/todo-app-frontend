@@ -4,8 +4,8 @@ import type {
 	ILoginDtoOut,
 	IRegisterDtoIn,
 	IRegisterDtoOut,
-} from "@/domain/dtos/auth.dto";
-import { authIntegrationPath } from "@/domain/paths/apiPath/auth.apiPath";
+} from "@/domain/dtos/auth/auth.dto";
+import { authIntegrationPath } from "@/domain/paths/apiPath/auth/auth.apiPath";
 import type { IApiResponse } from "@/helper/response.helper";
 
 class AuthIntegration {

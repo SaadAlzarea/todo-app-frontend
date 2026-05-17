@@ -24,7 +24,7 @@ export default function AppLayout() {
 					</BreadcrumbPage>
 				</header>
 				<div className="flex flex-1 flex-col gap-4 p-4">
-					<Card className="w-full h-full border-none shadow-none rounded-xl bg-muted/6">
+					<Card className="w-full h-full border-none shadow-none  bg-muted/6">
 						<CardContent className="max-w-full h-full">
 							<Outlet />
 						</CardContent>

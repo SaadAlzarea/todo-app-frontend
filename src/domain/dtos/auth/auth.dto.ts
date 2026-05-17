@@ -4,7 +4,7 @@ import type {
 	VLoginDtoOut,
 	VRegisterDtoIn,
 	VRegisterDtoOut,
-} from "../validations/auth.validation";
+} from "../../validations/auth/auth.validation";
 
 // * REGISTER
 export interface IRegisterDtoIn extends Static<typeof VRegisterDtoIn> {}

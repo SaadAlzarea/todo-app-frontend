@@ -1,6 +1,6 @@
 import { EUserRole } from "@/definition/enums/auth.enum";
 import { Type } from "@sinclair/typebox";
-import { ValidationMessages } from "./validation.messages";
+import { ValidationMessages } from "../validation.messages";
 
 // * REGISTER
 export const VRegisterDtoIn = Type.Object({

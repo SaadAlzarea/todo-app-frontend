@@ -8,12 +8,12 @@ import {
 	FormLabel,
 } from "@/components/ui/form";
 import { AuthenticationLocalStorage } from "@/data/authentication.localStorage";
-import type { ILoginDtoIn } from "@/domain/dtos/auth.dto";
+import type { ILoginDtoIn } from "@/domain/dtos/auth/auth.dto";
 import { authAppPath } from "@/domain/paths/appPath/auth.appPath";
 import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
-import { VLoginDtoIn } from "@/domain/validations/auth.validation";
+import { VLoginDtoIn } from "@/domain/validations/auth/auth.validation";
 import { ValidationMessages } from "@/domain/validations/validation.messages";
-import { useLogin } from "@/hooks/auth.hook";
+import { useLogin } from "@/hooks/auth/auth.hook";
 import { Button, Input } from "@base-ui/react";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import React, { useState } from "react";
@@ -60,8 +60,8 @@ export default function Login() {
 	/**
 	 * * FUNCTIONS
 	 */
-	function loginHandler(formBody: ILoginDtoIn) {
-		loginMutation.mutate(formBody, {
+	function loginHandler(defaultBody: ILoginDtoIn) {
+		loginMutation.mutate(defaultBody, {
 			onSuccess: (res) => {
 				if (res) {
 					AuthenticationLocalStorage.setToken(res.token);

@@ -1,3 +1,5 @@
+import dashboard from "@/pages/app/global/dashboard.page";
+
 export const routerAuthPaths = {
 	mainAuthPath: "/auth",
 	login: "user/login",
@@ -7,4 +9,6 @@ export const routerAuthPaths = {
 export const routerAppPaths = {
 	mainAppPath: "/todo-app",
 	home: "dashboard/home",
+	dashboard: "dashboard/dashboard",
+	personalProject: "dashboard/personal-project",
 };

@@ -35,7 +35,7 @@ export default function Home() {
 						<a
 							key={stat.label}
 							href={stat.href}
-							className="bg-muted rounded-lg p-3.5 flex flex-col gap-1 hover:bg-muted/80 transition-colors"
+							className="bg-muted  p-3.5 flex flex-col gap-1 hover:bg-muted/80 transition-colors"
 						>
 							<span className="text-[11px] text-muted-foreground uppercase tracking-wide">
 								{stat.label}
@@ -48,13 +48,13 @@ export default function Home() {
 				<div className="flex items-center gap-2">
 					<a
 						href="/admin/user-table"
-						className="inline-flex items-center gap-1.5 text-sm text-muted-foreground border border-border rounded-lg px-3.5 py-1.5 hover:bg-muted transition-colors"
+						className="inline-flex items-center gap-1.5 text-sm text-muted-foreground border border-border  px-3.5 py-1.5 hover:bg-muted transition-colors"
 					>
 						<Users2 className="h-4 w-4" /> Manage users
 					</a>
 					<a
 						href="/admin/notifications"
-						className="inline-flex items-center gap-1.5 text-sm text-muted-foreground border border-border rounded-lg px-3.5 py-1.5 hover:bg-muted transition-colors"
+						className="inline-flex items-center gap-1.5 text-sm text-muted-foreground border border-border  px-3.5 py-1.5 hover:bg-muted transition-colors"
 					>
 						<Mails className="h-4 w-4" /> Notifications
 					</a>

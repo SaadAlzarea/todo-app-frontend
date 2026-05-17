@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/form";
 import { AuthenticationLocalStorage } from "@/data/authentication.localStorage";
 import { EUserRole } from "@/definition/enums/auth.enum";
-import type { IRegisterDtoIn } from "@/domain/dtos/auth.dto";
+import type { IRegisterDtoIn } from "@/domain/dtos/auth/auth.dto";
 import { authAppPath } from "@/domain/paths/appPath/auth.appPath";
 import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
-import { VRegisterDtoIn } from "@/domain/validations/auth.validation";
+import { VRegisterDtoIn } from "@/domain/validations/auth/auth.validation";
 import { ValidationMessages } from "@/domain/validations/validation.messages";
-import { useRegister } from "@/hooks/auth.hook";
+import { useRegister } from "@/hooks/auth/auth.hook";
 import { Button, Input } from "@base-ui/react";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { useState } from "react";

@@ -1,14 +1,16 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import Home from "@/pages/app/home.page";
+import Home from "@/pages/app/global/home.page";
 import Login from "@/pages/auth/login.auth";
 import Register from "@/pages/auth/register.page";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import AuthLayout from "./layout/authLayout.layout";
 import AppLayout from "./layout/appLayout.layout";
 import { routerAppPaths, routerAuthPaths } from "./path.route";
+import Dashboard from "@/pages/app/global/dashboard.page";
+import PersonalProject from "@/pages/app/personal/personalProject.page";
 
 const { mainAuthPath, login, register } = routerAuthPaths;
-const { mainAppPath, home } = routerAppPaths;
+const { mainAppPath, home, dashboard, personalProject } = routerAppPaths;
 
 const router = createBrowserRouter([
 	{
@@ -22,7 +24,11 @@ const router = createBrowserRouter([
 	{
 		path: mainAppPath,
 		element: <AppLayout />,
-		children: [{ path: home, element: <Home /> }],
+		children: [
+			{ path: home, element: <Home /> },
+			{ path: dashboard, element: <Dashboard /> },
+			{ path: personalProject, element: <PersonalProject /> },
+		],
 	},
 ]);
 
