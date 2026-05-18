@@ -1,6 +1,7 @@
 import { backendHttpClient } from "@/clients/http.clinet";
 import type {
 	ICreatePersonalProjectDtoIn,
+	IDeletePersonalProjectDtoIn,
 	IGetAllPersonalProjectDtoOut,
 } from "@/domain/dtos/personal/personal.dto";
 import { personalProjectIntegrationPath } from "@/domain/paths/apiPath/personal/personalProject.path";
@@ -18,6 +19,14 @@ class PersonalProjectIntegration {
 	> {
 		const { getAllPersonalProject } = personalProjectIntegrationPath;
 		const res = await backendHttpClient.post(getAllPersonalProject);
+		return res.data;
+	}
+
+	async deletePersonalProject(req: IDeletePersonalProjectDtoIn) {
+		const { deletePersonalProject } = personalProjectIntegrationPath;
+		const res = await backendHttpClient.delete(deletePersonalProject, {
+			data: req,
+		});
 		return res.data;
 	}
 }

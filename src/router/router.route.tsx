@@ -8,9 +8,11 @@ import AppLayout from "./layout/appLayout.layout";
 import { routerAppPaths, routerAuthPaths } from "./path.route";
 import Dashboard from "@/pages/app/global/dashboard.page";
 import PersonalProject from "@/pages/app/personal/personalProject.page";
+import PersonalProjectTodo from "@/pages/app/personal/personalProjectTodo.page";
 
 const { mainAuthPath, login, register } = routerAuthPaths;
-const { mainAppPath, home, dashboard, personalProject } = routerAppPaths;
+const { mainAppPath, home, dashboard, personalProject, personalProjectTodo } =
+	routerAppPaths;
 
 const router = createBrowserRouter([
 	{
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
 		element: <AuthLayout />,
 		children: [
 			{ path: login, element: <Login /> },
-			{ path: register, element: <Register /> },
+			{ path: register, index: true, element: <Register /> },
 		],
 	},
 	{
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
 			{ path: home, element: <Home /> },
 			{ path: dashboard, element: <Dashboard /> },
 			{ path: personalProject, element: <PersonalProject /> },
+			{ path: personalProjectTodo, element: <PersonalProjectTodo /> },
 		],
 	},
 ]);

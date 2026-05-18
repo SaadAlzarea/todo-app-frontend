@@ -1,9 +1,7 @@
 import CommonAlert from "@/common/alert.common";
 import { State } from "@/common/state.common";
 import CreatePersonalProject from "@/components/app/personal/createPersonalProject.component";
-import GetAllPersonalProject, {
-	type getAllPersonalProjectProps,
-} from "@/components/app/personal/getAllPersonalProject.component";
+import GetAllPersonalProject from "@/components/app/personal/getAllPersonalProject.component";
 import {
 	CardContent,
 	CardDescription,
@@ -13,17 +11,21 @@ import {
 import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
 	ICreatePersonalProjectDtoIn,
-	IGetAllPersonalProjectDtoOut,
+	IDeletePersonalProjectDtoIn,
 } from "@/domain/dtos/personal/personal.dto";
 import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
-import { VCreatePersonalProjectDtoIn } from "@/domain/validations/personal/personal.validation";
+import {
+	VCreatePersonalProjectDtoIn,
+	VDeletePersonalProjectDtoIn,
+} from "@/domain/validations/personal/personal.validation";
 import {
 	useCreatePersonalProject,
+	useDeletePersonalProject,
 	useGetAllPersonalProject,
 } from "@/hooks/personal/personalProject.hook";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function PersonalProject() {
@@ -37,6 +39,7 @@ export default function PersonalProject() {
 	} | null>(null);
 	const [showAlert, setShowAlert] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+	const [isOpenDelete, setIsOpenDelete] = useState(false);
 
 	/**
 	 * * NAVIGATION
@@ -56,12 +59,22 @@ export default function PersonalProject() {
 		mode: "onSubmit",
 	});
 
-	const [info, setInfo] = useState();
+	const deletePersonalProjectFormDefaultBody = {
+		project_id: "",
+	};
+	const deletePersonalProjectForm = useForm<IDeletePersonalProjectDtoIn>({
+		resolver: typeboxResolver(VDeletePersonalProjectDtoIn),
+		defaultValues: deletePersonalProjectFormDefaultBody,
+		mode: "onSubmit",
+	});
 
 	/**
 	 * * QUERIES
 	 */
 	const createPersonalProjectMutation = useCreatePersonalProject();
+
+	const deletePersonalProjectMutation = useDeletePersonalProject();
+
 	const {
 		data: allPersonalProjectData,
 		isLoading: allPersonalProjectIsLoading,
@@ -115,6 +128,49 @@ export default function PersonalProject() {
 		});
 	}
 
+	function deletePersonalProjectHandler(
+		deletePersonalProjectForm: IDeletePersonalProjectDtoIn,
+	) {
+		deletePersonalProjectMutation.mutate(deletePersonalProjectForm, {
+			onSuccess: async (res) => {
+				if (res) {
+					setAlertInfo({
+						title: "Delete personal project successful!",
+						desc: ` Have a nice achievement..`,
+						type: "success",
+					});
+
+					await queryClient.invalidateQueries({
+						queryKey: [EQueryKey.GET_ALL_PERSONAL_PROJECT],
+					});
+
+					setShowAlert(true);
+					setIsOpenDelete(false);
+
+					setTimeout(() => {
+						setShowAlert(false);
+						// navigate(home);
+					}, 3000);
+				} else {
+					setAlertInfo({
+						title: "Delete personal project failed!",
+						desc: "Please try again.",
+						type: "error",
+					});
+					setShowAlert(true);
+				}
+			},
+			onError: (err) => {
+				setAlertInfo({
+					title: "Delete personal project failed",
+					desc: `${err}` || "Something went wrong.",
+					type: "error",
+				});
+				setShowAlert(true);
+			},
+		});
+	}
+
 	// console.log(allPersonalProjectData);
 	return (
 		<div>
@@ -157,6 +213,7 @@ export default function PersonalProject() {
 								isLoading={allPersonalProjectIsLoading}
 								error={allPersonalProjectError}
 								refetch={allPersonalProjectRefetch}
+								deletePersonalProjectHandler={deletePersonalProjectHandler}
 							/>
 						</CardContent>
 					</div>

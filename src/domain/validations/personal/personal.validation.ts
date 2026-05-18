@@ -17,3 +17,8 @@ export const VGetAllPersonalProjectDtoOut = Type.Object({
 	),
 	message: Type.String(),
 });
+
+// * DELETE PERSONAL PROJECT
+export const VDeletePersonalProjectDtoIn = Type.Object({
+	project_id: Type.String(),
+});
