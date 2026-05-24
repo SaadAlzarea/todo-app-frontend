@@ -1,13 +1,23 @@
 import { backendHttpClient } from "@/clients/http.clinet";
 import type {
+	ICreateNewProjectTodoDoIn,
+	ICreateNewProjectTodoDoOut,
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
 	IGetAllPersonalProjectDtoOut,
 } from "@/domain/dtos/personal/personal.dto";
-import { personalProjectIntegrationPath } from "@/domain/paths/apiPath/personal/personalProject.path";
+import {
+	personalProjectIntegrationPath,
+	personalProjectTodoIntegrationPath,
+} from "@/domain/paths/apiPath/personal/personalProject.path";
 import type { IApiResponse } from "@/helper/response.helper";
 
 class PersonalProjectIntegration {
+	/**
+	 * ! ====================
+	 * ! PERSONAL PROJECT
+	 * ! ====================
+	 */
 	async createPersonalProject(req: ICreatePersonalProjectDtoIn) {
 		const { createPersonalProject } = personalProjectIntegrationPath;
 		const res = await backendHttpClient.post(createPersonalProject, req);
@@ -27,6 +37,20 @@ class PersonalProjectIntegration {
 		const res = await backendHttpClient.delete(deletePersonalProject, {
 			data: req,
 		});
+		return res.data;
+	}
+
+	/**
+	 * ! ====================
+	 * ! PERSONAL PROJECT TODO
+	 * ! ====================
+	 */
+
+	async createPersonalProjectTodo(
+		req: ICreateNewProjectTodoDoIn,
+	): Promise<IApiResponse<ICreateNewProjectTodoDoOut>> {
+		const { createPersonalProjectTodo } = personalProjectTodoIntegrationPath;
+		const res = await backendHttpClient.post(createPersonalProjectTodo, req);
 		return res.data;
 	}
 }

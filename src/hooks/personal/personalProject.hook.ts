@@ -1,12 +1,18 @@
 import { EMutationKey } from "@/definition/enums/mutantionKey.enum";
 import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
+	ICreateNewProjectTodoDoIn,
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
 } from "@/domain/dtos/personal/personal.dto";
 import { personalProjectIntegration } from "@/integration/personal/personal.integration";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { mutationOptions, useMutation, useQuery } from "@tanstack/react-query";
 
+/**
+ * ! ====================
+ * ! PERSONAL PROJECT
+ * ! ====================
+ */
 export const useCreatePersonalProject = () => {
 	return useMutation({
 		mutationKey: [EMutationKey.CREATE_PERSONAL_PROJECT],
@@ -32,6 +38,23 @@ export const useDeletePersonalProject = () => {
 		mutationKey: [EMutationKey.DELETE_PERSONAL_DETAILS],
 		mutationFn: async (body: IDeletePersonalProjectDtoIn) => {
 			const res = await personalProjectIntegration.deletePersonalProject(body);
+			return res.data;
+		},
+	});
+};
+
+/**
+ * ! ====================
+ * ! PERSONAL PROJECT TODO
+ * ! ====================
+ */
+
+export const useCreatePersonalProjectTodo = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.CREATE_PERSONAL_PROJECT_TODO],
+		mutationFn: async (body: ICreateNewProjectTodoDoIn) => {
+			const res =
+				await personalProjectIntegration.createPersonalProjectTodo(body);
 			return res.data;
 		},
 	});

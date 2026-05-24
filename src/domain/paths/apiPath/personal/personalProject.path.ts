@@ -6,3 +6,7 @@ export const personalProjectIntegrationPath = {
 	deletePersonalProject:
 		"/api/todo-app/personal-project/delete-personal-project",
 };
+
+export const personalProjectTodoIntegrationPath = {
+	createPersonalProjectTodo: "/api/todo-app/todo/create",
+};
