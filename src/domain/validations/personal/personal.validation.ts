@@ -104,3 +104,21 @@ export const VPersonalProjectTodoGetTodoDetailsDtoOut = Type.Object({
 	createdAt: Type.Date(),
 	updatedAt: Type.Date(),
 });
+
+// * UPDATE TODO
+export const VUpdatePersonalProjectTodoDtoIn = Type.Object({
+	todo_id: Type.Optional(Type.String()),
+	title: Type.Optional(Type.String()),
+	body: Type.Optional(Type.String()),
+	progress: Type.Optional(Type.String()),
+	priority: Type.Optional(Type.Enum(ETodoPriority)),
+	status: Type.Optional(Type.Enum(ETodoStatus)),
+});
+
+export const VUpdatePersonalProjectTodoDtoOut = Type.Object({
+	title: Type.String(),
+	body: Type.String(),
+	progress: Type.String(),
+	priority: Type.Enum(ETodoPriority),
+	status: Type.Enum(ETodoStatus),
+});

@@ -9,6 +9,8 @@ import type {
 	IGetAllPersonalProjectTodosWithFilterDtoOut,
 	IGetPersonalProjectTodoDetailsDtoIn,
 	IGetPersonalProjectTodoDetailsDtoOut,
+	IUpdatePersonalProjectTodoDtoIn,
+	IUpdatePersonalProjectTodoDtoOut,
 } from "@/domain/dtos/personal/personal.dto";
 import {
 	personalProjectIntegrationPath,
@@ -81,6 +83,12 @@ class PersonalProjectIntegration {
 			getPersonalProjectTodoDetails,
 			req,
 		);
+		return res.data;
+	}
+
+	async updatePersonalProjectTodo(req: IUpdatePersonalProjectTodoDtoIn) {
+		const { updatePersonalProjectTodo } = personalProjectTodoIntegrationPath;
+		const res = await backendHttpClient.put(updatePersonalProjectTodo, req);
 		return res.data;
 	}
 }

@@ -6,6 +6,7 @@ import type {
 	IDeletePersonalProjectDtoIn,
 	IGetAllPersonalProjectTodosWithFilterDtoIn,
 	IGetPersonalProjectTodoDetailsDtoIn,
+	IUpdatePersonalProjectTodoDtoIn,
 } from "@/domain/dtos/personal/personal.dto";
 import { personalProjectIntegration } from "@/integration/personal/personal.integration";
 import { mutationOptions, useMutation, useQuery } from "@tanstack/react-query";
@@ -85,6 +86,17 @@ export const useGetPersonalProjectTodoDetails = (
 		queryFn: async () => {
 			const res =
 				await personalProjectIntegration.getPersonalProjectTodoDetails(body);
+			return res.data;
+		},
+	});
+};
+
+export const useUpdatePersonalProjectTodo = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.UPDATE_PERSONAL_PROJECT_TODO],
+		mutationFn: async (body: IUpdatePersonalProjectTodoDtoIn) => {
+			const res =
+				await personalProjectIntegration.updatePersonalProjectTodo(body);
 			return res.data;
 		},
 	});

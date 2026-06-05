@@ -8,6 +8,8 @@ import type {
 	VGetAllPersonalProjectTodosWithFilterDtoOut,
 	VPersonalProjectTodoGetTodoDetailsDtoIn,
 	VPersonalProjectTodoGetTodoDetailsDtoOut,
+	VUpdatePersonalProjectTodoDtoIn,
+	VUpdatePersonalProjectTodoDtoOut,
 } from "@/domain/validations/personal/personal.validation";
 import type { Static } from "@sinclair/typebox";
 import type { JSX } from "react/jsx-runtime";
@@ -51,3 +53,9 @@ export interface IGetPersonalProjectTodoDetailsDtoIn
 	extends Static<typeof VPersonalProjectTodoGetTodoDetailsDtoIn> {}
 export interface IGetPersonalProjectTodoDetailsDtoOut
 	extends Static<typeof VPersonalProjectTodoGetTodoDetailsDtoOut> {}
+
+// * UPDATE TODO
+export interface IUpdatePersonalProjectTodoDtoIn
+	extends Static<typeof VUpdatePersonalProjectTodoDtoIn> {}
+export interface IUpdatePersonalProjectTodoDtoOut
+	extends Static<typeof VUpdatePersonalProjectTodoDtoOut> {}
