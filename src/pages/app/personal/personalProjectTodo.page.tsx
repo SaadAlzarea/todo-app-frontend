@@ -1,11 +1,20 @@
 import { State } from "@/common/state.common";
 import CreatePersonalProjectTodo from "@/components/app/personal/createPersonalProjectTodo.component";
 import { ETodoPriority, ETodoStatus } from "@/definition/enums/todo.emun";
-import type { ICreateNewProjectTodoDoIn } from "@/domain/dtos/personal/personal.dto";
-import { VCreateNewProjectTodoDoIn } from "@/domain/validations/personal/personal.validation";
-import { useCreatePersonalProjectTodo } from "@/hooks/personal/personalProject.hook";
+import type {
+	ICreateNewProjectTodoDoIn,
+	IGetAllPersonalProjectTodosWithFilterDtoIn,
+} from "@/domain/dtos/personal/personal.dto";
+import {
+	VCreateNewProjectTodoDoIn,
+	VGetAllPersonalProjectTodosWithFilterDtoIn,
+} from "@/domain/validations/personal/personal.validation";
+import {
+	useCreatePersonalProjectTodo,
+	useGetAllPersonalProjectTodoWithFilterAndLimit,
+} from "@/hooks/personal/personalProject.hook";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import {
@@ -17,6 +26,7 @@ import {
 import CommonAlert from "@/common/alert.common";
 import { useQueryClient } from "@tanstack/react-query";
 import { EMutationKey } from "@/definition/enums/mutantionKey.enum";
+import AllPersonalProjectTodo from "@/components/app/personal/allPersonalProjectTodo.component";
 
 export default function PersonalProjectTodo() {
 	/**
@@ -53,19 +63,41 @@ export default function PersonalProjectTodo() {
 		mode: "onSubmit",
 	});
 
+	const allPersonalProjectTodoDefaultValues = {
+		project_id: id,
+		todo_id: undefined,
+		priority: undefined,
+		status: undefined,
+		page: undefined,
+		limit: undefined,
+	};
+
+	const allPersonalProjectTodoForm =
+		useForm<IGetAllPersonalProjectTodosWithFilterDtoIn>({
+			resolver: typeboxResolver(VGetAllPersonalProjectTodosWithFilterDtoIn),
+			defaultValues: { ...allPersonalProjectTodoDefaultValues },
+			mode: "onSubmit",
+		});
+
 	/**
 	 * * HELPER
 	 */
-	// const [createPersonalProject, setCreatePersonalProject] =
-	// 	useState<ICreateNewProjectTodoDoIn>(
-	// 		createPersonalProjectTodoForm.getValues,
-	// 	);
+	const [allPersonalProjectTodo, setAllPersonalProjectTodo] =
+		useState<IGetAllPersonalProjectTodosWithFilterDtoIn>(
+			allPersonalProjectTodoForm.getValues(),
+		);
 
 	/**
 	 * * QUERY
 	 */
 	const queryClient = useQueryClient();
 	const createPersonalProjectTodoMutation = useCreatePersonalProjectTodo();
+	const {
+		data: allPersonalTodoData,
+		isLoading: allPersonalTodoIsLoading,
+		error: allPersonalTodoError,
+		refetch: allPersonalTodoRefetch,
+	} = useGetAllPersonalProjectTodoWithFilterAndLimit(allPersonalProjectTodo);
 
 	/**
 	 * * HANDLER
@@ -113,15 +145,35 @@ export default function PersonalProjectTodo() {
 		});
 	}
 
-	// const createPersonalProjectTodoHandler = (
-	// 	values: ICreateNewProjectTodoDoIn,
-	// ) => {
-	// 	setCreatePersonalProject(values);
-	// };
+	const getAllPersonalProjectTodoWithFilterHandler = (
+		values: IGetAllPersonalProjectTodosWithFilterDtoIn,
+	) => {
+		setAllPersonalProjectTodo(values);
+	};
 
-	// const isChanged = () => {
-	// 	return !createPersonalProjectTodoForm.formState.isDirty;
-	// };
+	const clearFilter = () => {
+		const clearedValues = {
+			project_id: id || "",
+			todo_id: undefined,
+			priority: undefined,
+			status: undefined,
+			page: undefined,
+			limit: undefined,
+		};
+
+		allPersonalProjectTodoForm.reset(clearedValues);
+
+		setAllPersonalProjectTodo(clearedValues);
+	};
+
+	const isChanged = () => {
+		return !allPersonalProjectTodoForm.formState.isDirty;
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		allPersonalTodoRefetch();
+	}, [id]);
 
 	return (
 		<State
@@ -135,7 +187,7 @@ export default function PersonalProjectTodo() {
 				AlertD={alertInfo?.desc}
 				variant={alertInfo?.type === "error" ? "destructive" : "default"}
 			/>
-			<div>
+			<div className="flex flex-col gap-3">
 				<div className="w-full border p-2 flex justify-between items-center">
 					<CardHeader className="w-full">
 						<CardTitle>Create Personal Todo</CardTitle>
@@ -153,6 +205,30 @@ export default function PersonalProjectTodo() {
 							}
 							setIsOpen={setIsOpen}
 							isOpen={isOpen}
+						/>
+					</CardContent>
+				</div>
+				<div className="w-full border p-2 flex flex-col justify-between items-center ">
+					<CardHeader className="w-full">
+						<CardTitle>Create Personal Todo</CardTitle>
+						<CardDescription>
+							Here you can create your project and start activities.
+						</CardDescription>
+					</CardHeader>
+					<CardContent className=" flex gap-2 w-full">
+						{/* <Button>Create Personal Project</Button>
+					<Button>Create Organize Project</Button> */}
+						<AllPersonalProjectTodo
+							allPersonalTodoData={allPersonalTodoData}
+							allPersonalTodoIsLoading={allPersonalTodoIsLoading}
+							allPersonalTodoError={allPersonalTodoError}
+							allPersonalTodoRefetch={allPersonalTodoRefetch}
+							getAllPersonalProjectTodoWithFilterHandler={
+								getAllPersonalProjectTodoWithFilterHandler
+							}
+							isChanged={isChanged}
+							clearFilter={clearFilter}
+							allPersonalProjectTodoForm={allPersonalProjectTodoForm}
 						/>
 					</CardContent>
 				</div>

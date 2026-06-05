@@ -9,10 +9,17 @@ import { routerAppPaths, routerAuthPaths } from "./path.route";
 import Dashboard from "@/pages/app/global/dashboard.page";
 import PersonalProject from "@/pages/app/personal/personalProject.page";
 import PersonalProjectTodo from "@/pages/app/personal/personalProjectTodo.page";
+import PersonalProjectTodoDetails from "@/pages/app/personal/personalProjectTodoDetails.page";
 
 const { mainAuthPath, login, register } = routerAuthPaths;
-const { mainAppPath, home, dashboard, personalProject, personalProjectTodo } =
-	routerAppPaths;
+const {
+	mainAppPath,
+	home,
+	dashboard,
+	personalProject,
+	personalProjectTodo,
+	personalProjectTodoDetails,
+} = routerAppPaths;
 
 const router = createBrowserRouter([
 	{
@@ -31,6 +38,10 @@ const router = createBrowserRouter([
 			{ path: dashboard, element: <Dashboard /> },
 			{ path: personalProject, element: <PersonalProject /> },
 			{ path: personalProjectTodo, element: <PersonalProjectTodo /> },
+			{
+				path: personalProjectTodoDetails,
+				element: <PersonalProjectTodoDetails />,
+			},
 		],
 	},
 ]);

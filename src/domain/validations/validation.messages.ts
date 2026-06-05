@@ -6,4 +6,7 @@ export const ValidationMessages = {
 		name: "Name is short or incorrect",
 		deadline: "Enter Date",
 	},
+	searchValidation: {
+		id: "ID is short or incorrect",
+	},
 };

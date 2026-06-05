@@ -12,4 +12,5 @@ export const routerAppPaths = {
 	dashboard: "dashboard/dashboard",
 	personalProject: "dashboard/personal-project",
 	personalProjectTodo: "dashboard/personal-project/:id",
+	personalProjectTodoDetails: "dashboard/personal-project/todo-details/:id",
 };

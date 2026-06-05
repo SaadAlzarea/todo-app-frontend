@@ -5,6 +5,10 @@ import type {
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
 	IGetAllPersonalProjectDtoOut,
+	IGetAllPersonalProjectTodosWithFilterDtoIn,
+	IGetAllPersonalProjectTodosWithFilterDtoOut,
+	IGetPersonalProjectTodoDetailsDtoIn,
+	IGetPersonalProjectTodoDetailsDtoOut,
 } from "@/domain/dtos/personal/personal.dto";
 import {
 	personalProjectIntegrationPath,
@@ -51,6 +55,32 @@ class PersonalProjectIntegration {
 	): Promise<IApiResponse<ICreateNewProjectTodoDoOut>> {
 		const { createPersonalProjectTodo } = personalProjectTodoIntegrationPath;
 		const res = await backendHttpClient.post(createPersonalProjectTodo, req);
+		return res.data;
+	}
+
+	async getAllPersonalProjectTodoWithFilterAndLimit(
+		req: IGetAllPersonalProjectTodosWithFilterDtoIn,
+	): Promise<IApiResponse<IGetAllPersonalProjectTodosWithFilterDtoOut>> {
+		const { getAllPersonalProjectTodoWithFilterAndLimit } =
+			personalProjectTodoIntegrationPath;
+
+		const res = await backendHttpClient.post(
+			getAllPersonalProjectTodoWithFilterAndLimit,
+			req,
+		);
+		return res.data;
+	}
+
+	async getPersonalProjectTodoDetails(
+		req: IGetPersonalProjectTodoDetailsDtoIn,
+	): Promise<IApiResponse<IGetPersonalProjectTodoDetailsDtoOut>> {
+		const { getPersonalProjectTodoDetails } =
+			personalProjectTodoIntegrationPath;
+
+		const res = await backendHttpClient.post(
+			getPersonalProjectTodoDetails,
+			req,
+		);
 		return res.data;
 	}
 }

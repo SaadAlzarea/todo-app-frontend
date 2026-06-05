@@ -8,5 +8,8 @@ export const personalProjectIntegrationPath = {
 };
 
 export const personalProjectTodoIntegrationPath = {
+	getAllPersonalProjectTodoWithFilterAndLimit:
+		"/api/todo-app/todo/todo-filters",
 	createPersonalProjectTodo: "/api/todo-app/todo/create",
+	getPersonalProjectTodoDetails: "/api/todo-app/todo/todo-details",
 };

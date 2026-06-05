@@ -4,6 +4,8 @@ import type {
 	ICreateNewProjectTodoDoIn,
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
+	IGetAllPersonalProjectTodosWithFilterDtoIn,
+	IGetPersonalProjectTodoDetailsDtoIn,
 } from "@/domain/dtos/personal/personal.dto";
 import { personalProjectIntegration } from "@/integration/personal/personal.integration";
 import { mutationOptions, useMutation, useQuery } from "@tanstack/react-query";
@@ -55,6 +57,34 @@ export const useCreatePersonalProjectTodo = () => {
 		mutationFn: async (body: ICreateNewProjectTodoDoIn) => {
 			const res =
 				await personalProjectIntegration.createPersonalProjectTodo(body);
+			return res.data;
+		},
+	});
+};
+
+export const useGetAllPersonalProjectTodoWithFilterAndLimit = (
+	body: IGetAllPersonalProjectTodosWithFilterDtoIn,
+) => {
+	return useQuery({
+		queryKey: [EQueryKey.GET_ALL_PERSONAL_PROJECT_TODO_WITH_FILTER_AND_LIMIT],
+		queryFn: async () => {
+			const res =
+				await personalProjectIntegration.getAllPersonalProjectTodoWithFilterAndLimit(
+					body,
+				);
+			return res.data;
+		},
+	});
+};
+
+export const useGetPersonalProjectTodoDetails = (
+	body: IGetPersonalProjectTodoDetailsDtoIn,
+) => {
+	return useQuery({
+		queryKey: [EQueryKey.GET_PERSONAL_PROJECT_TODO_DETAILS],
+		queryFn: async () => {
+			const res =
+				await personalProjectIntegration.getPersonalProjectTodoDetails(body);
 			return res.data;
 		},
 	});
