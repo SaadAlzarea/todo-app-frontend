@@ -16,7 +16,7 @@ import {
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	CardContent,
 	CardDescription,
@@ -27,12 +27,15 @@ import CommonAlert from "@/common/alert.common";
 import { useQueryClient } from "@tanstack/react-query";
 import { EMutationKey } from "@/definition/enums/mutantionKey.enum";
 import AllPersonalProjectTodo from "@/components/app/personal/allPersonalProjectTodo.component";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export default function PersonalProjectTodo() {
 	/**
 	 * * NAVIGATION
 	 */
 	const { id } = useParams();
+	const navigate = useNavigate();
 
 	/**
 	 * * GLOBALS
@@ -188,25 +191,36 @@ export default function PersonalProjectTodo() {
 				variant={alertInfo?.type === "error" ? "destructive" : "default"}
 			/>
 			<div className="flex flex-col gap-3">
-				<div className="w-full border p-2 flex justify-between items-center">
-					<CardHeader className="w-full">
-						<CardTitle>Create Personal Todo</CardTitle>
-						<CardDescription>
-							Here you can create your project and start activities.
-						</CardDescription>
-					</CardHeader>
-					<CardContent className=" flex gap-2 ">
-						{/* <Button>Create Personal Project</Button>
-					<Button>Create Organize Project</Button> */}
-						<CreatePersonalProjectTodo
-							createPersonalProjectTodoForm={createPersonalProjectTodoForm}
-							createPersonalProjectTodoHandler={
-								createPersonalProjectTodoHandler
-							}
-							setIsOpen={setIsOpen}
-							isOpen={isOpen}
-						/>
-					</CardContent>
+				<div className="flex items-center gap-3">
+					<div className="border h-15 ">
+						<Button
+							variant={"ghost"}
+							className={"h-full flex items-center justify-center"}
+							onClick={() => navigate(-1)}
+						>
+							<ArrowLeft />
+						</Button>
+					</div>
+					<div className="w-full border p-2 flex justify-between items-center">
+						<CardHeader className="w-full">
+							<CardTitle>Create Personal Todo</CardTitle>
+							<CardDescription>
+								Here you can create your project and start activities.
+							</CardDescription>
+						</CardHeader>
+						<CardContent className=" flex gap-2 ">
+							{/* <Button>Create Personal Project</Button>
+							<Button>Create Organize Project</Button> */}
+							<CreatePersonalProjectTodo
+								createPersonalProjectTodoForm={createPersonalProjectTodoForm}
+								createPersonalProjectTodoHandler={
+									createPersonalProjectTodoHandler
+								}
+								setIsOpen={setIsOpen}
+								isOpen={isOpen}
+							/>
+						</CardContent>
+					</div>
 				</div>
 				<div className="w-full border p-2 flex flex-col justify-between items-center ">
 					<CardHeader className="w-full">
@@ -229,6 +243,7 @@ export default function PersonalProjectTodo() {
 							isChanged={isChanged}
 							clearFilter={clearFilter}
 							allPersonalProjectTodoForm={allPersonalProjectTodoForm}
+							projectId={id || ""}
 						/>
 					</CardContent>
 				</div>

@@ -122,3 +122,13 @@ export const VUpdatePersonalProjectTodoDtoOut = Type.Object({
 	priority: Type.Enum(ETodoPriority),
 	status: Type.Enum(ETodoStatus),
 });
+
+// * DELETE TODO
+export const VDeletePersonalProjectTodoByIdDtoIn = Type.Object({
+	todo_id: Type.String(),
+});
+
+// * MAKE IS COMPLETED
+export const VMakePersonalProjectTodoIsCompletedDtoIn = Type.Object({
+	todo_id: Type.String(),
+});

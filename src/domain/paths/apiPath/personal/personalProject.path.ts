@@ -13,4 +13,6 @@ export const personalProjectTodoIntegrationPath = {
 	createPersonalProjectTodo: "/api/todo-app/todo/create",
 	getPersonalProjectTodoDetails: "/api/todo-app/todo/todo-details",
 	updatePersonalProjectTodo: "/api/todo-app/todo/update-todo",
+	deletePersonalProjectTodo: "/api/todo-app/todo/delete-todo",
+	makePersonalProjectTodoIsCompleted: "/api/todo-app/todo/todo-is-completed",
 };

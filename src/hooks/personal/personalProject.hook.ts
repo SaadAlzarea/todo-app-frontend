@@ -4,8 +4,10 @@ import type {
 	ICreateNewProjectTodoDoIn,
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
+	IDeletePersonalProjectTodoByIdDtoIn,
 	IGetAllPersonalProjectTodosWithFilterDtoIn,
 	IGetPersonalProjectTodoDetailsDtoIn,
+	IMakePersonalProjectTodoIsCompletedDtoIn,
 	IUpdatePersonalProjectTodoDtoIn,
 } from "@/domain/dtos/personal/personal.dto";
 import { personalProjectIntegration } from "@/integration/personal/personal.integration";
@@ -97,6 +99,30 @@ export const useUpdatePersonalProjectTodo = () => {
 		mutationFn: async (body: IUpdatePersonalProjectTodoDtoIn) => {
 			const res =
 				await personalProjectIntegration.updatePersonalProjectTodo(body);
+			return res.data;
+		},
+	});
+};
+
+export const useDeletePersonalProjectTodo = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.DELETE_PERSONAL_PROJECT_TODO],
+		mutationFn: async (body: IDeletePersonalProjectTodoByIdDtoIn) => {
+			const res =
+				await personalProjectIntegration.deletePersonalProjectTodo(body);
+			return res.data;
+		},
+	});
+};
+
+export const useMakePersonalProjectTodoIsCompleted = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.MAKE_PERSONAL_PROJECT_TODO_IS_COMPLETED],
+		mutationFn: async (body: IMakePersonalProjectTodoIsCompletedDtoIn) => {
+			const res =
+				await personalProjectIntegration.makePersonalProjectTodoIsCompleted(
+					body,
+				);
 			return res.data;
 		},
 	});

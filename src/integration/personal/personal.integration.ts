@@ -4,11 +4,13 @@ import type {
 	ICreateNewProjectTodoDoOut,
 	ICreatePersonalProjectDtoIn,
 	IDeletePersonalProjectDtoIn,
+	IDeletePersonalProjectTodoByIdDtoIn,
 	IGetAllPersonalProjectDtoOut,
 	IGetAllPersonalProjectTodosWithFilterDtoIn,
 	IGetAllPersonalProjectTodosWithFilterDtoOut,
 	IGetPersonalProjectTodoDetailsDtoIn,
 	IGetPersonalProjectTodoDetailsDtoOut,
+	IMakePersonalProjectTodoIsCompletedDtoIn,
 	IUpdatePersonalProjectTodoDtoIn,
 	IUpdatePersonalProjectTodoDtoOut,
 } from "@/domain/dtos/personal/personal.dto";
@@ -89,6 +91,28 @@ class PersonalProjectIntegration {
 	async updatePersonalProjectTodo(req: IUpdatePersonalProjectTodoDtoIn) {
 		const { updatePersonalProjectTodo } = personalProjectTodoIntegrationPath;
 		const res = await backendHttpClient.put(updatePersonalProjectTodo, req);
+		return res.data;
+	}
+
+	async deletePersonalProjectTodo(req: IDeletePersonalProjectTodoByIdDtoIn) {
+		const { deletePersonalProjectTodo } = personalProjectTodoIntegrationPath;
+		const res = await backendHttpClient.delete(deletePersonalProjectTodo, {
+			data: req,
+		});
+		return res.data;
+	}
+
+	async makePersonalProjectTodoIsCompleted(
+		req: IMakePersonalProjectTodoIsCompletedDtoIn,
+	) {
+		const { makePersonalProjectTodoIsCompleted } =
+			personalProjectTodoIntegrationPath;
+
+		const res = await backendHttpClient.post(
+			makePersonalProjectTodoIsCompleted,
+			req,
+		);
+
 		return res.data;
 	}
 }

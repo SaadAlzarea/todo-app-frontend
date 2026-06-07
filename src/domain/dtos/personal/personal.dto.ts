@@ -3,9 +3,11 @@ import type {
 	VCreateNewProjectTodoDoOut,
 	VCreatePersonalProjectDtoIn,
 	VDeletePersonalProjectDtoIn,
+	VDeletePersonalProjectTodoByIdDtoIn,
 	VGetAllPersonalProjectDtoOut,
 	VGetAllPersonalProjectTodosWithFilterDtoIn,
 	VGetAllPersonalProjectTodosWithFilterDtoOut,
+	VMakePersonalProjectTodoIsCompletedDtoIn,
 	VPersonalProjectTodoGetTodoDetailsDtoIn,
 	VPersonalProjectTodoGetTodoDetailsDtoOut,
 	VUpdatePersonalProjectTodoDtoIn,
@@ -59,3 +61,11 @@ export interface IUpdatePersonalProjectTodoDtoIn
 	extends Static<typeof VUpdatePersonalProjectTodoDtoIn> {}
 export interface IUpdatePersonalProjectTodoDtoOut
 	extends Static<typeof VUpdatePersonalProjectTodoDtoOut> {}
+
+// * DELETE TODO
+export interface IDeletePersonalProjectTodoByIdDtoIn
+	extends Static<typeof VDeletePersonalProjectTodoByIdDtoIn> {}
+
+// * MAKE PERSONAL PROJECT IS COMPLETED
+export interface IMakePersonalProjectTodoIsCompletedDtoIn
+	extends Static<typeof VMakePersonalProjectTodoIsCompletedDtoIn> {}

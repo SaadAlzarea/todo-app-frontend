@@ -42,6 +42,7 @@ type AllPersonalProjectTodoProps = {
 	isChanged: () => boolean;
 	filter: ReactElement;
 	allPersonalProjectTodoForm: UseFormReturn<IGetAllPersonalProjectTodosWithFilterDtoIn>;
+	projectId: string;
 };
 
 const priorityVariant: Record<string, "default" | "secondary" | "destructive"> =
@@ -66,6 +67,7 @@ export default function AllPersonalProjectTodo({
 	getAllPersonalProjectTodoWithFilterHandler,
 	clearFilter,
 	isChanged,
+	projectId,
 }: AllPersonalProjectTodoProps) {
 	const { personalProjectTodoDetails } = todoAppPath;
 	useEffect(() => {

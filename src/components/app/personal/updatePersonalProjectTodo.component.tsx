@@ -55,8 +55,8 @@ export default function UpdatePersonalProjectTodo({
 }: UpdatePersonalProjectTodoProps) {
 	return (
 		<Dialog open={updateTodoState} onOpenChange={setUpdateTodoState}>
-			<DialogTrigger asChild className={"w-full"}>
-				<Button className={"w-full"}>Update Todo</Button>
+			<DialogTrigger asChild className={""}>
+				<Button className={""}>Update Todo</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-sm">
 				<FormProvider {...updatePersonalProjectTodoForm}>
