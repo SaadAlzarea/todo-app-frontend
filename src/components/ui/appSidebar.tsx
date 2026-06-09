@@ -42,7 +42,7 @@ const data = {
 			url: "/todo-app/dashboard/personal-project",
 			icon: PersonStanding,
 		},
-		{ name: "Organize", url: "/todo-app/notifications", icon: Group },
+		{ name: "Organize", url: "/todo-app/dashboard/group", icon: Group },
 		{ name: "Calender", url: "/todo-app/notifications", icon: Calendar },
 		{ name: "Settings", url: "/todo-app/notifications", icon: Settings },
 	],

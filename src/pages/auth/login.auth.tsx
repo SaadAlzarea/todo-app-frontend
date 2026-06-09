@@ -67,6 +67,8 @@ export default function Login() {
 					AuthenticationLocalStorage.setToken(res.token);
 					AuthenticationLocalStorage.setRole(res.role);
 
+					console.log();
+
 					setAlertInfo({
 						title: "Login successful!",
 						desc: "Have a nice achievement..",

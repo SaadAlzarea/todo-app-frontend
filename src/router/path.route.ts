@@ -10,7 +10,10 @@ export const routerAppPaths = {
 	mainAppPath: "/todo-app",
 	home: "dashboard/home",
 	dashboard: "dashboard/dashboard",
+	// * PERSONAL
 	personalProject: "dashboard/personal-project",
 	personalProjectTodo: "dashboard/personal-project/:id",
 	personalProjectTodoDetails: "dashboard/personal-project/todo-details/:id",
+	// * GROUP
+	group: "dashboard/group",
 };
