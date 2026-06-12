@@ -2,7 +2,8 @@ import { backendHttpClient } from "@/clients/http.clinet";
 import type {
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
-	IGetAllUserGroupsByUserIdDtoIn,
+	IGetAllGroupMemberByIdDtoIn,
+	IGetAllGroupMemberByIdDtoOut,
 	IGetAllUserGroupsByUserIdDtoOut,
 } from "@/domain/dtos/group/group.dto";
 import { groupIntegrationPath } from "@/domain/paths/apiPath/group/group.path";
@@ -26,6 +27,14 @@ class GroupIntegration {
 	async deleteGroup(req: IDeleteGroupDtoIn) {
 		const { deleteGroup } = groupIntegrationPath;
 		const res = await backendHttpClient.post(deleteGroup, req);
+		return res.data;
+	}
+
+	async getAllGroupMemberByGroupId(
+		req: IGetAllGroupMemberByIdDtoIn,
+	): Promise<IApiResponse<IGetAllGroupMemberByIdDtoOut>> {
+		const { getAllGroupMember } = groupIntegrationPath;
+		const res = await backendHttpClient.post(getAllGroupMember, req);
 		return res.data;
 	}
 }

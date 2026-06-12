@@ -11,3 +11,8 @@ export enum ETodoStatus {
 	ARCHIVED = "archived",
 	CANCELED = "canceled",
 }
+
+export enum EGroupMemberRole {
+	ADMIN = "admin",
+	MEMBER = "member",
+}

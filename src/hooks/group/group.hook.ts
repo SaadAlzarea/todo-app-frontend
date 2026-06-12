@@ -3,10 +3,11 @@ import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
+	IGetAllGroupMemberByIdDtoIn,
 	IGetAllUserGroupsByUserIdDtoIn,
 } from "@/domain/dtos/group/group.dto";
 import { groupIntegration } from "@/integration/group/group.integration";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useCreateGroup = () => {
 	return useMutation({
@@ -35,6 +36,18 @@ export const useDeleteGroup = () => {
 		mutationKey: [EMutationKey.DELETE_GROUP],
 		mutationFn: async (body: IDeleteGroupDtoIn) => {
 			const res = await groupIntegration.deleteGroup(body);
+			return res.data;
+		},
+	});
+};
+
+export const useGetAllGroupMemberByGroupId = (
+	body: IGetAllGroupMemberByIdDtoIn,
+) => {
+	return useQuery({
+		queryKey: [EQueryKey.GET_ALL_GROUP_MEMBERS],
+		queryFn: async () => {
+			const res = await groupIntegration.getAllGroupMemberByGroupId(body);
 			return res.data;
 		},
 	});

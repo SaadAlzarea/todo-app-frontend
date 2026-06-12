@@ -1,3 +1,4 @@
+import { EGroupMemberRole } from "@/definition/enums/todo.emun";
 import { Type } from "@sinclair/typebox";
 
 // * CREATE GROUP
@@ -25,3 +26,19 @@ export const VGetAllUserGroupsByUserIdDtoOut = Type.Object({
 export const VDeleteGroupDtoIn = Type.Object({
 	group_id: Type.String(),
 });
+
+// * GET ALL MEMBER IN GROUP
+export const VGetAllGroupMemberByIdDtoIn = Type.Object({
+	group_id: Type.String(),
+});
+
+export const VGetAllGroupMemberByIdDtoOut = Type.Array(
+	Type.Object({
+		email: Type.String(),
+		username: Type.String(),
+		group_member_id: Type.String(),
+		group_id: Type.String(),
+		user_id: Type.String(),
+		group_member_role: Type.Enum(EGroupMemberRole),
+	}),
+);
