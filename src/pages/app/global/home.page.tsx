@@ -1,7 +1,9 @@
 import { logoVWithoutBG } from "@/assets/global.d";
+import { userInfoStored } from "@/store/userInfo.store";
 import { Users2, Mails } from "lucide-react";
 
 export default function Home() {
+	const { userInfo } = userInfoStored();
 	return (
 		<div className="flex min-h-full items-center justify-center p-10">
 			<div className="flex flex-col gap-5 max-w-lg w-full">
@@ -18,7 +20,10 @@ export default function Home() {
 
 				<div className="flex flex-col gap-1.5">
 					<p className="text-2xl font-medium text-foreground">
-						Welcome back, Saad
+						Welcome back, {userInfo.username || ""}
+					</p>
+					<p className="text-sm text-muted-foreground leading-relaxed">
+						Check on your email {userInfo.email || ""}
 					</p>
 					<p className="text-sm text-muted-foreground leading-relaxed">
 						Here's what's happening across your platform today. Explore the

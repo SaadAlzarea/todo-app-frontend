@@ -4,4 +4,5 @@ export const todoAppPath = {
 	personalProjectTodoDetails:
 		"/todo-app/dashboard/personal-project/todo-details",
 	personalProjectTodos: "/todo-app/dashboard/personal-project",
+	groupDetails: "/todo-app/dashboard/group/group-details",
 };

@@ -1,18 +1,23 @@
-import {
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
-	useSidebar,
-} from "./sidebar";
+import { LogOut, ChevronsUpDown } from "lucide-react";
+import { userInfoStored } from "@/store/userInfo.store";
 import {
 	DropdownMenu,
+	DropdownMenuTrigger,
 	DropdownMenuContent,
-	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+	DropdownMenuItem,
+	DropdownMenuGroup,
 } from "./dropdown-menu";
-import { LogOut, ChevronsUpDown } from "lucide-react";
+import {
+	useSidebar,
+	SidebarMenu,
+	SidebarMenuItem,
+	SidebarMenuButton,
+} from "./sidebar";
+import { useNavigate } from "react-router-dom";
+import { AuthenticationLocalStorage } from "@/data/authentication.localStorage";
+import { authAppPath } from "@/domain/paths/appPath/auth.appPath";
 
 function getInitials(name?: string) {
 	if (!name) return "?";
@@ -24,12 +29,21 @@ function getInitials(name?: string) {
 		.slice(0, 2);
 }
 
-export function NavUser({ user }: { user: { name?: string; email?: string } }) {
+export function NavUser() {
+	const navigate = useNavigate();
+	const { login } = authAppPath;
 	const { isMobile } = useSidebar();
+	const { userInfo } = userInfoStored();
+
+	const handleLogout = () => {
+		AuthenticationLocalStorage.clearToken();
+		AuthenticationLocalStorage.clearRole();
+		navigate(login);
+	};
 
 	return (
-		<SidebarMenu>
-			<SidebarMenuItem>
+		<SidebarMenu className="w-full">
+			<SidebarMenuItem className="w-full">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<SidebarMenuButton
@@ -37,12 +51,14 @@ export function NavUser({ user }: { user: { name?: string; email?: string } }) {
 							className="w-full data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground text-xs font-medium">
-								{getInitials(user.name)}
+								{getInitials(userInfo?.username)}
 							</div>
 							<div className="grid flex-1 text-left text-sm leading-tight">
-								<span className="truncate font-medium">{user.name}</span>
+								<span className="truncate font-medium">
+									{userInfo?.username}
+								</span>
 								<span className="truncate text-xs text-sidebar-foreground/60">
-									{user.email}
+									{userInfo?.email}
 								</span>
 							</div>
 							<ChevronsUpDown className="ml-auto size-4 shrink-0 text-sidebar-foreground/40" />
@@ -55,24 +71,35 @@ export function NavUser({ user }: { user: { name?: string; email?: string } }) {
 						align="end"
 						sideOffset={4}
 					>
-						<DropdownMenuLabel className="p-0 font-normal">
-							<div className="flex items-center gap-2 px-2 py-2">
-								<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground text-xs font-medium">
-									{getInitials(user.name)}
+						<DropdownMenuGroup>
+							<DropdownMenuLabel className="p-0 font-normal">
+								<div className="flex items-center gap-2 px-2 py-2">
+									<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground text-xs font-medium">
+										{getInitials(userInfo?.username)}
+									</div>
+									<div className="grid flex-1 text-left text-sm leading-tight">
+										<span className="truncate font-medium">
+											{userInfo?.username}
+										</span>
+										<span className="truncate text-xs text-muted-foreground">
+											{userInfo?.email}
+										</span>
+									</div>
 								</div>
-								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-medium">{user.name}</span>
-									<span className="truncate text-xs text-muted-foreground">
-										{user.email}
-									</span>
-								</div>
-							</div>
-						</DropdownMenuLabel>
+							</DropdownMenuLabel>
+						</DropdownMenuGroup>
+
 						<DropdownMenuSeparator />
-						<DropdownMenuItem className="text-destructive focus:text-destructive">
-							<LogOut className="mr-2 h-4 w-4" />
-							Log out
-						</DropdownMenuItem>
+
+						<DropdownMenuGroup>
+							<DropdownMenuItem
+								onClick={handleLogout}
+								className="text-destructive focus:text-destructive"
+							>
+								<LogOut className="mr-2 h-4 w-4" />
+								Log out
+							</DropdownMenuItem>
+						</DropdownMenuGroup>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>

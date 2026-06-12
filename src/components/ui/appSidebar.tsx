@@ -54,7 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			{/* <SidebarHeader className="border-b border-sidebar-border px-3 py-3"></SidebarHeader> */}
 
 			<SidebarContent className="w-full px-2 py-2">
-				<NavUser user={data.user} />
+				<NavUser />
 				{/* <NavHome projects={data.home} /> */}
 				{/* <SidebarSeparator className="mx-2 my-1" /> */}
 				{/* <NavMain items={data.navMain} /> */}

@@ -211,8 +211,6 @@ export default function PersonalProjectTodoDetails() {
 				}, 3000);
 			},
 			onError: (err) => {
-				console.log("DELETE ERROR", err);
-
 				setAlertInfo({
 					title: "delete personal project todo failed",
 					desc: `${err}` || "Something went wrong.",

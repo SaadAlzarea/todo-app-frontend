@@ -8,17 +8,25 @@ import { State } from "@/common/state.common";
 import React, { useState } from "react";
 import CommonAlert from "@/common/alert.common";
 import { useForm } from "react-hook-form";
-import type { ICreateGroupDtoIn } from "@/domain/dtos/group/group.dto";
+import type {
+	ICreateGroupDtoIn,
+	IDeleteGroupDtoIn,
+} from "@/domain/dtos/group/group.dto";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { VCreateGroupDtoIn } from "@/domain/validations/group/group.validation";
+import {
+	VCreateGroupDtoIn,
+	VDeleteGroupDtoIn,
+} from "@/domain/validations/group/group.validation";
 import { create } from "axios";
 import {
 	useCreateGroup,
+	useDeleteGroup,
 	useGetAllUserGroupsByUserId,
 } from "@/hooks/group/group.hook";
 import { error } from "ajv/dist/vocabularies/applicator/dependencies";
 import CreateNewGroup from "@/components/app/group/createNewGroup.component";
 import AllGroupList from "@/components/app/group/allGroupList.component";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Groups() {
 	/**
@@ -35,6 +43,7 @@ export default function Groups() {
 	 * * GLOBAL
 	 */
 	const [createNewGroup, setCreateNewGroup] = useState(false);
+	const [deleteGroup, setDeleteGroup] = useState(false);
 	/**
 	 * * FORM
 	 */
@@ -50,13 +59,25 @@ export default function Groups() {
 		mode: "onSubmit",
 	});
 
-	// all groups
-	// const getAllUserGroupsDefaultBody ={
-	// }
+	// delete group
+	const deleteGroupDefaultBody = {
+		group_id: undefined,
+	};
+
+	const deleteGroupForm = useForm<IDeleteGroupDtoIn>({
+		resolver: typeboxResolver(VDeleteGroupDtoIn),
+		defaultValues: deleteGroupDefaultBody,
+		mode: "onSubmit",
+	});
+
 	/**
 	 * * QUERIES
 	 */
+	const queryClient = useQueryClient();
+
 	const createGroupMutation = useCreateGroup();
+
+	const deleteGroupMutation = useDeleteGroup();
 
 	const {
 		data: getAllUserGroupsData,
@@ -64,8 +85,6 @@ export default function Groups() {
 		error: getAllUserGroupsError,
 		refetch: getAllUserGroupsRefetch,
 	} = useGetAllUserGroupsByUserId();
-
-	console.log(getAllUserGroupsData);
 
 	/**
 	 * * HANDLERS
@@ -78,7 +97,7 @@ export default function Groups() {
 					desc: `${createGroupForm.group_name} Have a nice achievement..`,
 					type: "success",
 				});
-
+				getAllUserGroupsRefetch();
 				setShowAlert(true);
 				setCreateNewGroup(false);
 				setTimeout(() => {
@@ -97,11 +116,44 @@ export default function Groups() {
 			},
 		});
 	}
+
+	function deleteGroupHandler(deleteGroupForm: IDeleteGroupDtoIn) {
+		deleteGroupMutation.mutate(deleteGroupForm, {
+			onSuccess: () => {
+				setAlertInfo({
+					title: "Delete group successful!",
+					desc: `${deleteGroupForm.group_id} Have a nice achievement..`,
+					type: "success",
+				});
+				getAllUserGroupsRefetch();
+				setDeleteGroup(false);
+				setShowAlert(true);
+				setTimeout(() => {
+					setShowAlert(false);
+					// navigate(home);
+				}, 3000);
+			},
+			onError(err) {
+				setAlertInfo({
+					title: "Delete group failed",
+					desc: `${err}` || "Something went wrong.",
+					type: "error",
+				});
+				setDeleteGroup(false);
+				setShowAlert(true);
+			},
+		});
+	}
 	/**
 	 * * EFFECTS
 	 */
+
 	return (
-		<State>
+		<State
+			isLoading={getAllUserGroupsIsLoading}
+			onRetry={getAllUserGroupsRefetch}
+			error={getAllUserGroupsError}
+		>
 			<div>
 				<CommonAlert
 					show={showAlert}
@@ -134,7 +186,13 @@ export default function Groups() {
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="w-full flex gap-2 ">
-							<AllGroupList getAllUserGroupsData={getAllUserGroupsData} />
+							<AllGroupList
+								getAllUserGroupsData={getAllUserGroupsData}
+								deleteGroupHandler={deleteGroupHandler}
+								deleteGroup={deleteGroup}
+								setDeleteGroup={setDeleteGroup}
+								deleteGroupForm={deleteGroupForm}
+							/>
 						</CardContent>
 					</div>
 				</div>

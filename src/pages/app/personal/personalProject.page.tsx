@@ -171,7 +171,6 @@ export default function PersonalProject() {
 		});
 	}
 
-	// console.log(allPersonalProjectData);
 	return (
 		<div>
 			<CommonAlert

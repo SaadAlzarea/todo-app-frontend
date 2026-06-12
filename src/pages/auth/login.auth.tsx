@@ -14,6 +14,7 @@ import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
 import { VLoginDtoIn } from "@/domain/validations/auth/auth.validation";
 import { ValidationMessages } from "@/domain/validations/validation.messages";
 import { useLogin } from "@/hooks/auth/auth.hook";
+import { userInfoStored } from "@/store/userInfo.store";
 import { Button, Input } from "@base-ui/react";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import React, { useState } from "react";
@@ -31,6 +32,10 @@ export default function Login() {
 	} | null>(null);
 	const [showAlert, setShowAlert] = useState(false);
 
+	/**
+	 * ZUSTAND
+	 */
+	const { setUserInfo } = userInfoStored();
 	/**
 	 * * NAVIGATE
 	 */
@@ -67,7 +72,7 @@ export default function Login() {
 					AuthenticationLocalStorage.setToken(res.token);
 					AuthenticationLocalStorage.setRole(res.role);
 
-					console.log();
+					setUserInfo(res);
 
 					setAlertInfo({
 						title: "Login successful!",

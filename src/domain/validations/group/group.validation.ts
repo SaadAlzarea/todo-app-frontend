@@ -20,3 +20,8 @@ export const VGetAllUserGroupsByUserIdDtoOut = Type.Object({
 		),
 	}),
 });
+
+// * DELETE GROUP
+export const VDeleteGroupDtoIn = Type.Object({
+	group_id: Type.String(),
+});

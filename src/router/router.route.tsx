@@ -12,6 +12,7 @@ import PersonalProjectTodo from "@/pages/app/personal/personalProjectTodo.page";
 import PersonalProjectTodoDetails from "@/pages/app/personal/personalProjectTodoDetails.page";
 import ProtectedRoute from "@/components/ProtectedRoute.component";
 import Groups from "@/pages/app/group/group.page";
+import GroupDetails from "@/pages/app/group/groupDetails.page";
 
 const { mainAuthPath, login, register } = routerAuthPaths;
 const {
@@ -22,6 +23,7 @@ const {
 	personalProjectTodo,
 	personalProjectTodoDetails,
 	group,
+	groupDetails,
 } = routerAppPaths;
 
 const router = createBrowserRouter([
@@ -54,6 +56,7 @@ const router = createBrowserRouter([
 
 			// * GROUP
 			{ path: group, element: <Groups /> },
+			{ path: groupDetails, element: <GroupDetails /> },
 		],
 	},
 ]);

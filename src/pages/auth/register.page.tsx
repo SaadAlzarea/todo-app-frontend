@@ -16,6 +16,7 @@ import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
 import { VRegisterDtoIn } from "@/domain/validations/auth/auth.validation";
 import { ValidationMessages } from "@/domain/validations/validation.messages";
 import { useRegister } from "@/hooks/auth/auth.hook";
+import { userInfoStored } from "@/store/userInfo.store";
 import { Button, Input } from "@base-ui/react";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { useState } from "react";
@@ -39,6 +40,11 @@ export default function Register() {
 	const navigate = useNavigate();
 	const { home } = todoAppPath;
 	const { login } = authAppPath;
+
+	/**
+	 * * ZUSTAND
+	 */
+	const { setUserInfo } = userInfoStored();
 
 	/**
 	 * * FORM
@@ -66,6 +72,7 @@ export default function Register() {
 	 * * FUNCTIONS
 	 */
 	function registerHandler(formBody: IRegisterDtoIn) {
+		setUserInfo(formBody);
 		registerMutation.mutate(formBody, {
 			onSuccess: (res) => {
 				if (res) {
