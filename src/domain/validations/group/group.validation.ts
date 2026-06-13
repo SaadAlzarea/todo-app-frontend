@@ -42,3 +42,15 @@ export const VGetAllGroupMemberByIdDtoOut = Type.Array(
 		group_member_role: Type.Enum(EGroupMemberRole),
 	}),
 );
+
+// * ADD MEMBER TO GROUP
+export const VAddMemberToGroupDtoIn = Type.Object({
+	member_email: Type.String(),
+	group_id: Type.String(),
+});
+
+// // * DELETE MEMBER
+// export const VDeleteMemberFromGroupDtoIn = Type.Object({
+// 	member_user_id: Type.String(),
+// 	group_id: Type.String(),
+// });

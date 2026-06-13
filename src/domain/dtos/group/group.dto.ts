@@ -1,4 +1,5 @@
 import type {
+	VAddMemberToGroupDtoIn,
 	VCreateGroupDtoIn,
 	VDeleteGroupDtoIn,
 	VGetAllGroupMemberByIdDtoIn,
@@ -25,3 +26,7 @@ export interface IGetAllGroupMemberByIdDtoIn
 	extends Static<typeof VGetAllGroupMemberByIdDtoIn> {}
 export interface IGetAllGroupMemberByIdDtoOut
 	extends Static<typeof VGetAllGroupMemberByIdDtoOut> {}
+
+// * ADD MEMBER TO GROUP
+export interface IAddMemberToGroupDtoIn
+	extends Static<typeof VAddMemberToGroupDtoIn> {}

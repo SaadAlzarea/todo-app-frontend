@@ -1,6 +1,7 @@
 import { EMutationKey } from "@/definition/enums/mutantionKey.enum";
 import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
+	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
@@ -48,6 +49,16 @@ export const useGetAllGroupMemberByGroupId = (
 		queryKey: [EQueryKey.GET_ALL_GROUP_MEMBERS],
 		queryFn: async () => {
 			const res = await groupIntegration.getAllGroupMemberByGroupId(body);
+			return res.data;
+		},
+	});
+};
+
+export const useAddNewMemberToGroupByUserEmail = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.ADD_MEMBER_TO_GROUP],
+		mutationFn: async (body: IAddMemberToGroupDtoIn) => {
+			const res = await groupIntegration.addNewMemberToGroupByUserEmail(body);
 			return res.data;
 		},
 	});

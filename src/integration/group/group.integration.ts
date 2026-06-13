@@ -1,5 +1,6 @@
 import { backendHttpClient } from "@/clients/http.clinet";
 import type {
+	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
@@ -35,6 +36,11 @@ class GroupIntegration {
 	): Promise<IApiResponse<IGetAllGroupMemberByIdDtoOut>> {
 		const { getAllGroupMember } = groupIntegrationPath;
 		const res = await backendHttpClient.post(getAllGroupMember, req);
+		return res.data;
+	}
+	async addNewMemberToGroupByUserEmail(req: IAddMemberToGroupDtoIn) {
+		const { addMemberToGroup } = groupIntegrationPath;
+		const res = await backendHttpClient.post(addMemberToGroup, req);
 		return res.data;
 	}
 }

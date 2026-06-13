@@ -17,16 +17,15 @@ type GroupMembersProps = {
 };
 
 export default function GroupMembers({ groupMembersData }: GroupMembersProps) {
-	console.log("this is group members", groupMembersData);
 	return (
 		<div className="w-full">
 			{(groupMembersData?.length as number) ? (
 				groupMembersData?.map((element: any) => (
 					<div
 						key={element.group_id}
-						className="relative border p-2 flex items-start justify-between hover:bg-muted/50 "
+						className="relative border my-3 p-2 flex gep-3 items-start justify-between hover:bg-muted/50 "
 					>
-						<Link to={``} className="w-full">
+						<Link to={``} className="w-full ">
 							<CardHeader className="flex flex-col gap-2 p-2 pr-14">
 								<CardTitle>{element.username}</CardTitle>
 
