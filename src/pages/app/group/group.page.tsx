@@ -27,6 +27,7 @@ import { error } from "ajv/dist/vocabularies/applicator/dependencies";
 import CreateNewGroup from "@/components/app/group/createNewGroup.component";
 import AllGroupList from "@/components/app/group/allGroupList.component";
 import { useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft } from "lucide-react";
 
 export default function Groups() {
 	/**

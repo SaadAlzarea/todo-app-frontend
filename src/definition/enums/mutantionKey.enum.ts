@@ -14,4 +14,9 @@ export enum EMutationKey {
 	// * GROUP
 	CREATE_GROUP = "create-group",
 	DELETE_GROUP = "delete-group",
+	ADD_MEMBER_TO_GROUP = "add-member-to-group",
+	DELETE_MEMBER_FROM_GROUP = "delete-member-from-group",
+
+	// * GROUP PROJECT
+	CREATE_GROUP_PROJECT = "create-group-project",
 }

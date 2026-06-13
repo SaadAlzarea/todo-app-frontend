@@ -20,10 +20,10 @@ export default function Home() {
 
 				<div className="flex flex-col gap-1.5">
 					<p className="text-2xl font-medium text-foreground">
-						Welcome back, {userInfo.username || ""}
+						Welcome back, {userInfo?.username}
 					</p>
 					<p className="text-sm text-muted-foreground leading-relaxed">
-						Check on your email {userInfo.email || ""}
+						Check on your email {userInfo?.email}
 					</p>
 					<p className="text-sm text-muted-foreground leading-relaxed">
 						Here's what's happening across your platform today. Explore the

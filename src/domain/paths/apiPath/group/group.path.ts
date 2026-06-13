@@ -3,4 +3,11 @@ export const groupIntegrationPath = {
 	getAllUserGroupsByUserId: "/api/todo-app/groups/get-all-groups",
 	deleteGroup: "/api/todo-app/groups/delete-group",
 	getAllGroupMember: "/api/todo-app/groups/all-group-member",
+	addMemberToGroup: "/api/todo-app/groups/add-new-member",
+	deleteMemberFromGroup: "/api/todo-app/groups/delete-member",
+};
+
+export const groupProjectsIntegrationPath = {
+	getAllGroupProjects: "/api/todo-app/group-project/get-all-group-projects",
+	createGroupProject: "/api/todo-app/group-project/create-group-project",
 };
