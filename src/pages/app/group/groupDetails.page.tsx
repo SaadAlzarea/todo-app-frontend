@@ -8,15 +8,18 @@ import {
 } from "@/components/ui/card";
 import type {
 	IAddMemberToGroupDtoIn,
+	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
 } from "@/domain/dtos/group/group.dto";
 import {
 	VAddMemberToGroupDtoIn,
+	VDeleteMemberFromGroupDtoIn,
 	VGetAllGroupMemberByIdDtoIn,
 } from "@/domain/validations/group/group.validation";
 import {
 	useAddNewMemberToGroupByUserEmail,
+	useDeleteMemberFromGroup,
 	useGetAllGroupMemberByGroupId,
 } from "@/hooks/group/group.hook";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
@@ -50,9 +53,10 @@ export default function GroupDetails() {
 	 */
 	const [openMember, setOpenMember] = useState(false);
 	const [addMember, setAddMember] = useState(false);
+	const [deleteMember, setDeleteMember] = useState(false);
 
 	/**
-	 * * FORM
+	 * * FORMS
 	 */
 	// group members details
 	const groupMembersDefaultValue = {
@@ -75,6 +79,16 @@ export default function GroupDetails() {
 		mode: "onSubmit",
 	});
 
+	// delete member
+	const deleteMemberDefaultValue = {
+		member_user_id: undefined,
+		group_id: id,
+	};
+	const deleteMemberForm = useForm<IDeleteMemberFromGroupDtoIn>({
+		resolver: typeboxResolver(VDeleteMemberFromGroupDtoIn),
+		defaultValues: deleteMemberDefaultValue,
+		mode: "onSubmit",
+	});
 	/**
 	 * * QUERIES
 	 */
@@ -88,6 +102,9 @@ export default function GroupDetails() {
 
 	// add member
 	const addMemberToGroupMutation = useAddNewMemberToGroupByUserEmail();
+
+	// delete member
+	const deleteMemberFromGroupMutation = useDeleteMemberFromGroup();
 
 	/**
 	 * * HANDLERS
@@ -119,14 +136,41 @@ export default function GroupDetails() {
 		});
 	}
 
+	function deleteMemberFromGroupHandler(
+		deleteMemberForm: IDeleteMemberFromGroupDtoIn,
+	) {
+		deleteMemberFromGroupMutation.mutate(deleteMemberForm, {
+			onSuccess: () => {
+				setAlertInfo({
+					title: "Add New member to group successful!",
+					desc: `${deleteMemberForm.member_user_id} Has been deleted.`,
+					type: "success",
+				});
+				setDeleteMember(false);
+				setShowAlert(true);
+
+				setTimeout(() => {
+					setShowAlert(false);
+				}, 3000);
+			},
+			onError: (err) => {
+				setAlertInfo({
+					title: "delete personal project todo failed",
+					desc: `${err}` || "Something went wrong.",
+					type: "error",
+				});
+				setDeleteMember(false);
+			},
+		});
+	}
+
 	/**
 	 * * EFFECT
 	 */
-
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		groupMembersRefetch();
-	}, [addedMemberToGroupHandler]);
+	}, [addedMemberToGroupHandler, deleteMemberFromGroupHandler]);
 
 	return (
 		<State>
@@ -211,6 +255,11 @@ export default function GroupDetails() {
 										groupMembersData={
 											groupMembersData as unknown as IGetAllGroupMemberByIdDtoOut
 										}
+										//delete member props
+										deleteMemberFromGroupHandler={deleteMemberFromGroupHandler}
+										deleteMemberForm={deleteMemberForm}
+										deleteMember={deleteMember}
+										setDeleteMember={setDeleteMember}
 									/>
 								</CardContent>
 							</div>

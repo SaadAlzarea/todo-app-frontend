@@ -3,6 +3,7 @@ import type {
 	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
+	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
 	IGetAllUserGroupsByUserIdDtoOut,
@@ -38,9 +39,16 @@ class GroupIntegration {
 		const res = await backendHttpClient.post(getAllGroupMember, req);
 		return res.data;
 	}
+
 	async addNewMemberToGroupByUserEmail(req: IAddMemberToGroupDtoIn) {
 		const { addMemberToGroup } = groupIntegrationPath;
 		const res = await backendHttpClient.post(addMemberToGroup, req);
+		return res.data;
+	}
+
+	async deleteMemberFromGroup(req: IDeleteMemberFromGroupDtoIn) {
+		const { deleteMemberFromGroup } = groupIntegrationPath;
+		const res = await backendHttpClient.post(deleteMemberFromGroup, req);
 		return res.data;
 	}
 }

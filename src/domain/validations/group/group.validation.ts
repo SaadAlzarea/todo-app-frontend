@@ -49,8 +49,8 @@ export const VAddMemberToGroupDtoIn = Type.Object({
 	group_id: Type.String(),
 });
 
-// // * DELETE MEMBER
-// export const VDeleteMemberFromGroupDtoIn = Type.Object({
-// 	member_user_id: Type.String(),
-// 	group_id: Type.String(),
-// });
+// * DELETE MEMBER
+export const VDeleteMemberFromGroupDtoIn = Type.Object({
+	member_user_id: Type.String(),
+	group_id: Type.String(),
+});

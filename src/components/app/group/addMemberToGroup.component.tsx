@@ -48,9 +48,9 @@ export default function AddMemberToGroup({
 						onSubmit={addMemberFrom.handleSubmit(addedMemberToGroupHandler)}
 					>
 						<DialogHeader>
-							<DialogTitle>Create New Group</DialogTitle>
+							<DialogTitle>Add New Member</DialogTitle>
 							<DialogDescription>
-								Make your new group. Click create when you&apos;re done.
+								Add new member with your team. Click Add when you&apos;re done.
 							</DialogDescription>
 						</DialogHeader>
 						<FieldGroup className="py-2">
@@ -82,7 +82,7 @@ export default function AddMemberToGroup({
 							<DialogClose asChild>
 								<Button variant="outline">Cancel</Button>
 							</DialogClose>
-							<Button type="submit">Create</Button>
+							<Button type="submit">Add</Button>
 						</DialogFooter>
 					</form>
 				</FormProvider>

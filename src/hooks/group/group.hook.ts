@@ -4,6 +4,7 @@ import type {
 	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
 	IDeleteGroupDtoIn,
+	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllUserGroupsByUserIdDtoIn,
 } from "@/domain/dtos/group/group.dto";
@@ -59,6 +60,16 @@ export const useAddNewMemberToGroupByUserEmail = () => {
 		mutationKey: [EMutationKey.ADD_MEMBER_TO_GROUP],
 		mutationFn: async (body: IAddMemberToGroupDtoIn) => {
 			const res = await groupIntegration.addNewMemberToGroupByUserEmail(body);
+			return res.data;
+		},
+	});
+};
+
+export const useDeleteMemberFromGroup = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.DELETE_GROUP],
+		mutationFn: async (body: IDeleteMemberFromGroupDtoIn) => {
+			const res = await groupIntegration.deleteMemberFromGroup(body);
 			return res.data;
 		},
 	});

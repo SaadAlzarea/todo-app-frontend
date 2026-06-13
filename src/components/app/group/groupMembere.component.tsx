@@ -1,5 +1,8 @@
-import type { IGetAllGroupMemberByIdDtoOut } from "@/domain/dtos/group/group.dto";
-import React from "react";
+import type {
+	IDeleteMemberFromGroupDtoIn,
+	IGetAllGroupMemberByIdDtoOut,
+} from "@/domain/dtos/group/group.dto";
+import React, { useState } from "react";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Ellipsis } from "lucide-react";
 import {
@@ -12,11 +15,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+
+import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 type GroupMembersProps = {
 	groupMembersData?: IGetAllGroupMemberByIdDtoOut;
+	//
+	deleteMemberFromGroupHandler: SubmitHandler<IDeleteMemberFromGroupDtoIn>;
+	deleteMemberForm: UseFormReturn<IDeleteMemberFromGroupDtoIn>;
+	deleteMember: boolean;
+	setDeleteMember: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function GroupMembers({ groupMembersData }: GroupMembersProps) {
+export default function GroupMembers({
+	groupMembersData,
+	deleteMemberFromGroupHandler,
+	deleteMemberForm,
+	setDeleteMember,
+	deleteMember,
+}: GroupMembersProps) {
+	const [memberUserId, setMemberUserId] = useState("");
 	return (
 		<div className="w-full">
 			{(groupMembersData?.length as number) ? (
@@ -31,7 +58,7 @@ export default function GroupMembers({ groupMembersData }: GroupMembersProps) {
 
 								<CardDescription className="w-full flex text-xs gap-3">
 									<p className="text-xs"> {element.group_member_role}</p>
-									<p className="text-xs">Email: {element.email}</p>{" "}
+									<p className="text-xs">Email: {element.email}</p>
 								</CardDescription>
 							</CardHeader>
 						</Link>
@@ -48,12 +75,11 @@ export default function GroupMembers({ groupMembersData }: GroupMembersProps) {
 								<DropdownMenuContent align="end">
 									<DropdownMenuGroup>
 										<DropdownMenuLabel>Setting</DropdownMenuLabel>
-
 										<DropdownMenuItem
 											className="text-red-500"
 											onClick={() => {
-												// setDeleteGroup(true);
-												// setGroupId(element.group_id);
+												setDeleteMember(true);
+												setMemberUserId(element.user_id);
 											}}
 										>
 											Delete
@@ -69,6 +95,34 @@ export default function GroupMembers({ groupMembersData }: GroupMembersProps) {
 					No Members found ..
 				</CardDescription>
 			)}
+
+			<Dialog open={deleteMember} onOpenChange={setDeleteMember}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Are you absolutely sure?</DialogTitle>
+
+						<DialogDescription>This action cannot be undone.</DialogDescription>
+					</DialogHeader>
+
+					<DialogFooter>
+						<DialogClose>
+							<Button variant="outline">Cancel</Button>
+						</DialogClose>
+						<Button
+							variant="destructive"
+							onClick={() => {
+								deleteMemberFromGroupHandler({
+									group_id: deleteMemberForm.getValues().group_id,
+									member_user_id: memberUserId,
+								});
+								setDeleteMember(false);
+							}}
+						>
+							Sure
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
