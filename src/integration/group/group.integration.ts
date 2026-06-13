@@ -2,13 +2,20 @@ import { backendHttpClient } from "@/clients/http.clinet";
 import type {
 	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
+	ICreateGroupProjectDtoIn,
+	ICreateGroupProjectDtoOut,
 	IDeleteGroupDtoIn,
 	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
+	IGetAllGroupProjectsDtoIn,
+	IGetAllGroupProjectsDtoOut,
 	IGetAllUserGroupsByUserIdDtoOut,
 } from "@/domain/dtos/group/group.dto";
-import { groupIntegrationPath } from "@/domain/paths/apiPath/group/group.path";
+import {
+	groupIntegrationPath,
+	groupProjectsIntegrationPath,
+} from "@/domain/paths/apiPath/group/group.path";
 import type { IApiResponse } from "@/helper/response.helper";
 
 class GroupIntegration {
@@ -49,6 +56,22 @@ class GroupIntegration {
 	async deleteMemberFromGroup(req: IDeleteMemberFromGroupDtoIn) {
 		const { deleteMemberFromGroup } = groupIntegrationPath;
 		const res = await backendHttpClient.post(deleteMemberFromGroup, req);
+		return res.data;
+	}
+
+	async getAllGroupProjects(
+		req: IGetAllGroupProjectsDtoIn,
+	): Promise<IApiResponse<IGetAllGroupProjectsDtoOut>> {
+		const { getAllGroupProjects } = groupProjectsIntegrationPath;
+		const res = await backendHttpClient.post(getAllGroupProjects, req);
+		return res.data;
+	}
+
+	async createGroupProject(
+		req: ICreateGroupProjectDtoIn,
+	): Promise<IApiResponse<ICreateGroupProjectDtoOut>> {
+		const { createGroupProject } = groupProjectsIntegrationPath;
+		const res = await backendHttpClient.post(createGroupProject, req);
 		return res.data;
 	}
 }

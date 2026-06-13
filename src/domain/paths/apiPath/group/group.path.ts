@@ -6,3 +6,8 @@ export const groupIntegrationPath = {
 	addMemberToGroup: "/api/todo-app/groups/add-new-member",
 	deleteMemberFromGroup: "/api/todo-app/groups/delete-member",
 };
+
+export const groupProjectsIntegrationPath = {
+	getAllGroupProjects: "/api/todo-app/group-project/get-all-group-projects",
+	createGroupProject: "/api/todo-app/group-project/create-group-project",
+};

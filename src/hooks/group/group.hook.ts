@@ -3,9 +3,11 @@ import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
 	IAddMemberToGroupDtoIn,
 	ICreateGroupDtoIn,
+	ICreateGroupProjectDtoIn,
 	IDeleteGroupDtoIn,
 	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
+	IGetAllGroupProjectsDtoIn,
 	IGetAllUserGroupsByUserIdDtoIn,
 } from "@/domain/dtos/group/group.dto";
 import { groupIntegration } from "@/integration/group/group.integration";
@@ -70,6 +72,26 @@ export const useDeleteMemberFromGroup = () => {
 		mutationKey: [EMutationKey.DELETE_GROUP],
 		mutationFn: async (body: IDeleteMemberFromGroupDtoIn) => {
 			const res = await groupIntegration.deleteMemberFromGroup(body);
+			return res.data;
+		},
+	});
+};
+
+export const useGetAllGroupProjects = (body: IGetAllGroupProjectsDtoIn) => {
+	return useQuery({
+		queryKey: [EQueryKey.GET_ALL_GROUP_PROJECTS],
+		queryFn: async () => {
+			const res = await groupIntegration.getAllGroupProjects(body);
+			return res.data;
+		},
+	});
+};
+
+export const useCreateGroupProject = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.CREATE_GROUP_PROJECT],
+		mutationFn: async (body: ICreateGroupProjectDtoIn) => {
+			const res = await groupIntegration.createGroupProject(body);
 			return res.data;
 		},
 	});

@@ -8,19 +8,25 @@ import {
 } from "@/components/ui/card";
 import type {
 	IAddMemberToGroupDtoIn,
+	ICreateGroupProjectDtoIn,
 	IDeleteMemberFromGroupDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
+	IGetAllGroupProjectsDtoIn,
 } from "@/domain/dtos/group/group.dto";
 import {
 	VAddMemberToGroupDtoIn,
+	VCreateGroupProjectDtoIn,
 	VDeleteMemberFromGroupDtoIn,
 	VGetAllGroupMemberByIdDtoIn,
+	VGetAllGroupProjectsDtoIn,
 } from "@/domain/validations/group/group.validation";
 import {
 	useAddNewMemberToGroupByUserEmail,
+	useCreateGroupProject,
 	useDeleteMemberFromGroup,
 	useGetAllGroupMemberByGroupId,
+	useGetAllGroupProjects,
 } from "@/hooks/group/group.hook";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { ArrowLeft } from "lucide-react";
@@ -30,6 +36,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import GroupMembers from "@/components/app/group/groupMembere.component";
 import AddMemberToGroup from "@/components/app/group/addMemberToGroup.component";
 import CommonAlert from "@/common/alert.common";
+import CreateGroupProject from "@/components/app/group/createGroupProject.component";
+import AllGroupProjects from "@/components/app/group/allGroupProjects.component";
 
 export default function GroupDetails() {
 	/**
@@ -54,6 +62,7 @@ export default function GroupDetails() {
 	const [openMember, setOpenMember] = useState(false);
 	const [addMember, setAddMember] = useState(false);
 	const [deleteMember, setDeleteMember] = useState(false);
+	const [createGroupProject, setCreateGroupProject] = useState(false);
 
 	/**
 	 * * FORMS
@@ -89,6 +98,29 @@ export default function GroupDetails() {
 		defaultValues: deleteMemberDefaultValue,
 		mode: "onSubmit",
 	});
+
+	// get all group project
+	const allGroupProjectsDefaultValue = {
+		group_id: id,
+	};
+	const allGroupProjectsForm = useForm<IGetAllGroupProjectsDtoIn>({
+		resolver: typeboxResolver(VGetAllGroupProjectsDtoIn),
+		defaultValues: allGroupProjectsDefaultValue,
+		mode: "onSubmit",
+	});
+
+	// create group project
+	const createGroupProjectDefaultValue = {
+		project_name: undefined,
+		group_id: id,
+		project_deadline: undefined,
+	};
+	const createGroupProjectForm = useForm<ICreateGroupProjectDtoIn>({
+		resolver: typeboxResolver(VCreateGroupProjectDtoIn),
+		defaultValues: createGroupProjectDefaultValue,
+		mode: "onSubmit",
+	});
+
 	/**
 	 * * QUERIES
 	 */
@@ -100,11 +132,22 @@ export default function GroupDetails() {
 		refetch: groupMembersRefetch,
 	} = useGetAllGroupMemberByGroupId(groupMembersForm.getValues());
 
+	// get all group projects
+	const {
+		data: allGroupProjectsData,
+		error: allGroupProjectsError,
+		isLoading: allGroupProjectsIsLoading,
+		refetch: allGroupProjectsRefetch,
+	} = useGetAllGroupProjects(allGroupProjectsForm.getValues());
+
 	// add member
 	const addMemberToGroupMutation = useAddNewMemberToGroupByUserEmail();
 
 	// delete member
 	const deleteMemberFromGroupMutation = useDeleteMemberFromGroup();
+
+	//create group project
+	const createGroupProjectMutation = useCreateGroupProject();
 
 	/**
 	 * * HANDLERS
@@ -164,6 +207,34 @@ export default function GroupDetails() {
 		});
 	}
 
+	function createGroupProjectHandler(
+		createGroupProjectForm: ICreateGroupProjectDtoIn,
+	) {
+		createGroupProjectMutation.mutate(createGroupProjectForm, {
+			onSuccess: () => {
+				setAlertInfo({
+					title: "Add New member to group successful!",
+					desc: `${createGroupProjectForm.project_deadline} Has been deleted.`,
+					type: "success",
+				});
+
+				setShowAlert(true);
+				setCreateGroupProject(false);
+				setTimeout(() => {
+					setShowAlert(false);
+				}, 3000);
+			},
+			onError: (err) => {
+				setAlertInfo({
+					title: "delete personal project todo failed",
+					desc: `${err}` || "Something went wrong.",
+					type: "error",
+				});
+				setCreateGroupProject(false);
+			},
+		});
+	}
+
 	/**
 	 * * EFFECT
 	 */
@@ -171,6 +242,11 @@ export default function GroupDetails() {
 	useEffect(() => {
 		groupMembersRefetch();
 	}, [addedMemberToGroupHandler, deleteMemberFromGroupHandler]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		allGroupProjectsRefetch();
+	}, [createGroupProjectHandler]);
 
 	return (
 		<State>
@@ -210,7 +286,12 @@ export default function GroupDetails() {
 										Members
 									</Button>
 								</Link>
-								<Button>Create Project</Button>
+								<CreateGroupProject
+									createGroupProjectHandler={createGroupProjectHandler}
+									createGroupProjectForm={createGroupProjectForm}
+									setCreateGroupProject={setCreateGroupProject}
+									createGroupProject={createGroupProject}
+								/>
 							</CardContent>
 						</div>
 					</div>
@@ -265,15 +346,25 @@ export default function GroupDetails() {
 							</div>
 						</State>
 					) : (
-						<div className="w-full border p-2 flex flex-col justify-between items-center">
-							<CardHeader className="w-full">
-								<CardTitle>All Project</CardTitle>
-								<CardDescription>
-									Here you can see your all your groups.
-								</CardDescription>
-							</CardHeader>
-							<CardContent className="w-full flex gap-2 "></CardContent>
-						</div>
+						<State
+							error={allGroupProjectsError}
+							isLoading={allGroupProjectsIsLoading}
+							onRetry={allGroupProjectsRefetch}
+						>
+							<div className="w-full border p-2 flex flex-col justify-between items-center">
+								<CardHeader className="w-full">
+									<CardTitle>All Project</CardTitle>
+									<CardDescription>
+										Here you can see your all your groups.
+									</CardDescription>
+								</CardHeader>
+								<CardContent className="w-full flex gap-2 ">
+									<AllGroupProjects
+										allGroupProjectsData={allGroupProjectsData}
+									/>
+								</CardContent>
+							</div>
+						</State>
 					)}
 				</div>
 			</div>
