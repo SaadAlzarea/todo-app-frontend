@@ -2,6 +2,7 @@ import { EMutationKey } from "@/definition/enums/mutantionKey.enum";
 import { EQueryKey } from "@/definition/enums/queryKey.enum";
 import type {
 	IAddMemberToGroupDtoIn,
+	ICreateAssignTodoInGroupProjectDtoIn,
 	ICreateGroupDtoIn,
 	ICreateGroupProjectDtoIn,
 	IDeleteGroupDtoIn,
@@ -92,6 +93,19 @@ export const useCreateGroupProject = () => {
 		mutationKey: [EMutationKey.CREATE_GROUP_PROJECT],
 		mutationFn: async (body: ICreateGroupProjectDtoIn) => {
 			const res = await groupIntegration.createGroupProject(body);
+			return res.data;
+		},
+	});
+};
+
+export const useCreateNewGroupProjectAssignTodoWithAttachment = () => {
+	return useMutation({
+		mutationKey: [EMutationKey.CREATE_ASSIGN_TODO],
+		mutationFn: async (body: ICreateAssignTodoInGroupProjectDtoIn) => {
+			const res =
+				await groupIntegration.createNewGroupProjectAssignTodoWithAttachment(
+					body,
+				);
 			return res.data;
 		},
 	});

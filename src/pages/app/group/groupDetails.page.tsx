@@ -38,6 +38,8 @@ import AddMemberToGroup from "@/components/app/group/addMemberToGroup.component"
 import CommonAlert from "@/common/alert.common";
 import CreateGroupProject from "@/components/app/group/createGroupProject.component";
 import AllGroupProjects from "@/components/app/group/allGroupProjects.component";
+import { useAssignTodoInfo } from "@/store/createAssignTodo.store";
+import { useGroupMemberStore } from "@/store/groupMember.store";
 
 export default function GroupDetails() {
 	/**
@@ -236,6 +238,12 @@ export default function GroupDetails() {
 	}
 
 	/**
+	 * * ZUSTAND
+	 */
+	const { setAssignTodoInfo } = useAssignTodoInfo();
+	const { setGroupMember } = useGroupMemberStore();
+
+	/**
 	 * * EFFECT
 	 */
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -247,6 +255,25 @@ export default function GroupDetails() {
 	useEffect(() => {
 		allGroupProjectsRefetch();
 	}, [createGroupProjectHandler]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		if (!id) return;
+
+		setAssignTodoInfo({ group_id: id });
+	}, [id]);
+
+	useEffect(() => {
+		if (!groupMembersData) return;
+
+		setGroupMember(
+			groupMembersData.map((member) => ({
+				email: member.email,
+				username: member.username,
+				user_id: member.user_id,
+			})),
+		);
+	}, [groupMembersData, setGroupMember]);
 
 	return (
 		<State>

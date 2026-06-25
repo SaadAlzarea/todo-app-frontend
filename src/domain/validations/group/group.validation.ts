@@ -1,4 +1,8 @@
-import { EGroupMemberRole } from "@/definition/enums/todo.emun";
+import {
+	EGroupMemberRole,
+	ETodoPriority,
+	ETodoStatus,
+} from "@/definition/enums/todo.emun";
 import { Type } from "@sinclair/typebox";
 
 // * CREATE GROUP
@@ -43,6 +47,14 @@ export const VGetAllGroupMemberByIdDtoOut = Type.Array(
 	}),
 );
 
+export const VAllGroupMember = Type.Array(
+	Type.Object({
+		email: Type.String(),
+		username: Type.String(),
+		user_id: Type.String(),
+	}),
+);
+
 // * ADD MEMBER TO GROUP
 export const VAddMemberToGroupDtoIn = Type.Object({
 	member_email: Type.String(),
@@ -62,6 +74,7 @@ export const VGetAllGroupProjectsDtoIn = Type.Object({
 
 export const VGetAllGroupProjectsDtoOut = Type.Array(
 	Type.Object({
+		project_id: Type.String(),
 		project_name: Type.String(),
 		project_deadline: Type.String(),
 		created_by: Type.String(),
@@ -82,6 +95,57 @@ export const VCreateGroupProjectDtoOut = Type.Object({
 	group_id: Type.String(),
 	created_by: Type.String(),
 	project_deadline: Type.Date(),
+	createdAt: Type.Date(),
+	updatedAt: Type.Date(),
+});
+
+// * GET ALL ASSIGN TODO
+export const VGetAllAssignTodoInGroupProjectListDtoIn = Type.Object({
+	group_id: Type.String(),
+	project_id: Type.String(),
+});
+
+export const VGetAllAssignTodoInGroupProjectListDtoOut = Type.Array(
+	Type.Object({
+		assign_todo_id: Type.String(),
+		project_id: Type.String(),
+		assign_from: Type.String(),
+		assign_to: Type.String(),
+		title: Type.String(),
+		priority: Type.Union([Type.Enum(ETodoPriority), Type.Null()]),
+		status: Type.Union([Type.Enum(ETodoStatus), Type.Null()]),
+		isCompleted: Type.Boolean(),
+		deadline: Type.Union([Type.Date(), Type.Null()]),
+	}),
+);
+
+// * CREATE ASSIGN TODO
+export const VCreateAssignTodoInGroupProjectDtoIn = Type.Object({
+	group_id: Type.String(),
+	project_id: Type.String(),
+	assign_to: Type.Array(
+		Type.Object({
+			user_id: Type.String(),
+		}),
+	),
+	title: Type.String(),
+	body: Type.String(),
+	priority: Type.Enum(ETodoPriority),
+	status: Type.Enum(ETodoStatus),
+	deadline: Type.String(),
+});
+
+export const VCreateAssignTodoInGroupProjectDtoOut = Type.Object({
+	assign_todo_id: Type.String(),
+	group_id: Type.String(),
+	project_id: Type.String(),
+	assign_from: Type.String(),
+	assign_to: Type.String(),
+	title: Type.String(),
+	body: Type.String(),
+	priority: Type.Enum(ETodoPriority),
+	status: Type.Enum(ETodoStatus),
+	deadline: Type.String(),
 	createdAt: Type.Date(),
 	updatedAt: Type.Date(),
 });

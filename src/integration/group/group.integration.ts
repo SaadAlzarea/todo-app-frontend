@@ -1,11 +1,13 @@
 import { backendHttpClient } from "@/clients/http.clinet";
 import type {
 	IAddMemberToGroupDtoIn,
+	ICreateAssignTodoInGroupProjectDtoIn,
 	ICreateGroupDtoIn,
 	ICreateGroupProjectDtoIn,
 	ICreateGroupProjectDtoOut,
 	IDeleteGroupDtoIn,
 	IDeleteMemberFromGroupDtoIn,
+	IGetAllAssignTodoInGroupProjectListDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
 	IGetAllGroupProjectsDtoIn,
@@ -72,6 +74,14 @@ class GroupIntegration {
 	): Promise<IApiResponse<ICreateGroupProjectDtoOut>> {
 		const { createGroupProject } = groupProjectsIntegrationPath;
 		const res = await backendHttpClient.post(createGroupProject, req);
+		return res.data;
+	}
+
+	async createNewGroupProjectAssignTodoWithAttachment(
+		req: ICreateAssignTodoInGroupProjectDtoIn,
+	) {
+		const { assignTodo } = groupProjectsIntegrationPath;
+		const res = await backendHttpClient.post(assignTodo, req);
 		return res.data;
 	}
 }

@@ -34,6 +34,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { ICreateGroupProjectDtoIn } from "@/domain/dtos/group/group.dto";
+import { useGroupMemberStore } from "@/store/groupMember.store";
 
 type CreateGroupProjectProps = {
 	createGroupProjectHandler: SubmitHandler<ICreateGroupProjectDtoIn>;

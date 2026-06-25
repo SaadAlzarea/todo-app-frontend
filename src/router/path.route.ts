@@ -18,4 +18,5 @@ export const routerAppPaths = {
 	group: "dashboard/group",
 	groupDetails: "dashboard/group/group-details/:id",
 	groupMember: "dashboard/group/group-details/group-member/:id",
+	projectGroupTodos: "dashboard/group/group-details/project-group-todos/:id",
 };

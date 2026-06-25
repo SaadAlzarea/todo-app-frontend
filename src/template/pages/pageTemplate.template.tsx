@@ -6,11 +6,18 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { useState } from "react";
 
 export default function PageTemplate() {
 	/**
 	 * * ALERT
 	 */
+	const [alertInfo, setAlertInfo] = useState<{
+		title: string;
+		desc: string;
+		type: "success" | "error";
+	} | null>(null);
+	const [showAlert, setShowAlert] = useState(false);
 	/**
 	 * * GLOBAL
 	 */

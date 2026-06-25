@@ -10,4 +10,7 @@ export const groupIntegrationPath = {
 export const groupProjectsIntegrationPath = {
 	getAllGroupProjects: "/api/todo-app/group-project/get-all-group-projects",
 	createGroupProject: "/api/todo-app/group-project/create-group-project",
+	getAllAssignTodoInGroupProjectList:
+		"/api/todo-app/assign-todo/get-all-project-assign-todo-list",
+	assignTodo: "/api/todo-app/assign-todo/create-assign-todo",
 };

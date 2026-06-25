@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import type { IGetAllGroupProjectsDtoIn } from "@/domain/dtos/group/group.dto";
 import { Button } from "@/components/ui/button";
 import { Ellipsis } from "lucide-react";
+import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
 
 type AllGroupProjectsProps = {
 	allGroupProjectsData: IGetAllGroupProjectsDtoIn;
@@ -18,6 +19,7 @@ type AllGroupProjectsProps = {
 export default function AllGroupProjects({
 	allGroupProjectsData,
 }: AllGroupProjectsProps) {
+	const { projectGroupTodos } = todoAppPath;
 	return (
 		<div className="w-full grid grid-cols-1 gap-2 py-2">
 			{(allGroupProjectsData?.length as number) ? (
@@ -26,7 +28,10 @@ export default function AllGroupProjects({
 						key={element.group_id}
 						className="relative border p-2 flex items-start justify-between hover:bg-muted/50 "
 					>
-						<Link to={``} className="w-full">
+						<Link
+							to={`${projectGroupTodos}/${element.project_id}`}
+							className="w-full"
+						>
 							<CardHeader className="flex flex-col gap-2 p-2 pr-14">
 								<CardTitle>{element.project_name}</CardTitle>
 

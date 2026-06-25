@@ -1,10 +1,16 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import type {
 	VAddMemberToGroupDtoIn,
+	VAllGroupMember,
+	VCreateAssignTodoInGroupProjectDtoIn,
+	VCreateAssignTodoInGroupProjectDtoOut,
 	VCreateGroupDtoIn,
 	VCreateGroupProjectDtoIn,
 	VCreateGroupProjectDtoOut,
 	VDeleteGroupDtoIn,
 	VDeleteMemberFromGroupDtoIn,
+	VGetAllAssignTodoInGroupProjectListDtoIn,
+	VGetAllAssignTodoInGroupProjectListDtoOut,
 	VGetAllGroupMemberByIdDtoIn,
 	VGetAllGroupMemberByIdDtoOut,
 	VGetAllGroupProjectsDtoIn,
@@ -32,6 +38,8 @@ export interface IGetAllGroupMemberByIdDtoIn
 export interface IGetAllGroupMemberByIdDtoOut
 	extends Static<typeof VGetAllGroupMemberByIdDtoOut> {}
 
+export interface IAllGroupMember extends Static<typeof VAllGroupMember> {}
+
 // * ADD MEMBER TO GROUP
 export interface IAddMemberToGroupDtoIn
 	extends Static<typeof VAddMemberToGroupDtoIn> {}
@@ -51,3 +59,15 @@ export interface ICreateGroupProjectDtoIn
 	extends Static<typeof VCreateGroupProjectDtoIn> {}
 export interface ICreateGroupProjectDtoOut
 	extends Static<typeof VCreateGroupProjectDtoOut> {}
+
+// * GET ALL ASSIGN TODO
+export interface IGetAllAssignTodoInGroupProjectListDtoIn
+	extends Static<typeof VGetAllAssignTodoInGroupProjectListDtoIn> {}
+export interface IGetAllAssignTodoInGroupProjectListDtoOut
+	extends Static<typeof VGetAllAssignTodoInGroupProjectListDtoOut> {}
+
+// * CREATE ASSIGN TODO
+export interface ICreateAssignTodoInGroupProjectDtoIn
+	extends Static<typeof VCreateAssignTodoInGroupProjectDtoIn> {}
+export interface ICreateAssignTodoInGroupProjectDtoOut
+	extends Static<typeof VCreateAssignTodoInGroupProjectDtoOut> {}

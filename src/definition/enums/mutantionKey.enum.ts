@@ -19,4 +19,5 @@ export enum EMutationKey {
 
 	// * GROUP PROJECT
 	CREATE_GROUP_PROJECT = "create-group-project",
+	CREATE_ASSIGN_TODO = "create-assign-todo",
 }
