@@ -9,8 +9,17 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { ICreateAssignTodoInGroupProjectDtoIn } from "@/domain/dtos/group/group.dto";
-import { VCreateAssignTodoInGroupProjectDtoIn } from "@/domain/validations/group/group.validation";
+import { FieldGroup } from "@/components/ui/field";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import type {
+	ICreateAssignTodoInGroupProjectDtoIn,
+	IGetAllAssignTodoInGroupProjectListDtoIn,
+} from "@/domain/dtos/group/group.dto";
+import {
+	VCreateAssignTodoInGroupProjectDtoIn,
+	VGetAllAssignTodoInGroupProjectListDtoIn,
+} from "@/domain/validations/group/group.validation";
 import {
 	useCreateNewGroupProjectAssignTodoWithAttachment,
 	useGetAllAssignTodoInGroupProjectList,
@@ -19,7 +28,7 @@ import { useAssignTodoInfo } from "@/store/createAssignTodo.store";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function ProjectGroupTodo() {
@@ -50,7 +59,7 @@ export default function ProjectGroupTodo() {
 	const [assignTodoState, setAssignTodoState] = useState(false);
 
 	/**
-	 * * FORM — only for creating a todo
+	 * * FORM
 	 */
 	const assignTodoForm = useForm<ICreateAssignTodoInGroupProjectDtoIn>({
 		resolver: typeboxResolver(VCreateAssignTodoInGroupProjectDtoIn),
@@ -67,6 +76,26 @@ export default function ProjectGroupTodo() {
 		mode: "onSubmit",
 	});
 
+	const getAllTodoGroupProjectDefaultValue = {
+		group_id: assignTodoInfo?.group_id || "",
+		project_id: id || "",
+		user_username: undefined,
+	};
+	const getAllTodoGroupProjectForm =
+		useForm<IGetAllAssignTodoInGroupProjectListDtoIn>({
+			resolver: typeboxResolver(VGetAllAssignTodoInGroupProjectListDtoIn),
+			defaultValues: getAllTodoGroupProjectDefaultValue,
+			mode: "onSubmit",
+		});
+
+	/**
+	 * * HELPER
+	 */
+	const [getAllTodoGroupProjectState, setGetAllTodoGroupProjectState] =
+		useState<IGetAllAssignTodoInGroupProjectListDtoIn>(
+			getAllTodoGroupProjectForm.getValues(),
+		);
+
 	/**
 	 * * QUERIES
 	 */
@@ -77,16 +106,7 @@ export default function ProjectGroupTodo() {
 		error: allAssignTodoError,
 		isLoading: allAssignTodoIsLoading,
 		refetch: allAssignTodoRefetch,
-	} = useGetAllAssignTodoInGroupProjectList({
-		group_id: assignTodoInfo?.group_id,
-		project_id: id,
-	});
-
-	console.log("🔍 assignTodoInfo:", assignTodoInfo);
-	console.log("🔍 id from useParams:", id);
-	console.log("🔍 allAssignTodoData:", allAssignTodoData);
-	console.log("🔍 allAssignTodoError:", allAssignTodoError);
-	console.log("🔍 allAssignTodoIsLoading:", allAssignTodoIsLoading);
+	} = useGetAllAssignTodoInGroupProjectList(getAllTodoGroupProjectState);
 
 	/**
 	 * * HANDLERS
@@ -119,9 +139,32 @@ export default function ProjectGroupTodo() {
 		});
 	}
 
+	const getAllTodoGroupProjectHandler = (
+		values: IGetAllAssignTodoInGroupProjectListDtoIn,
+	) => {
+		setGetAllTodoGroupProjectState(values);
+	};
+
+	const clearFilter = () => {
+		const clearedValues = {
+			group_id: assignTodoInfo?.group_id || "",
+			project_id: id || "",
+			user_username: undefined,
+		};
+
+		getAllTodoGroupProjectForm.reset(clearedValues);
+
+		setGetAllTodoGroupProjectState(clearedValues);
+	};
+
+	const isChanged = () => {
+		return !getAllTodoGroupProjectForm.formState.isDirty;
+	};
 	/**
 	 * * EFFECTS
 	 */
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (!assignTodoInfo) return;
 
@@ -138,7 +181,11 @@ export default function ProjectGroupTodo() {
 	}, [assignTodoInfo, id]);
 
 	return (
-		<State>
+		<State
+			isLoading={allAssignTodoIsLoading}
+			error={allAssignTodoError}
+			onRetry={allAssignTodoRefetch}
+		>
 			<div>
 				<CommonAlert
 					show={showAlert}
@@ -177,33 +224,69 @@ export default function ProjectGroupTodo() {
 					</div>
 
 					<div className="w-full border p-2 flex flex-col justify-between items-center">
-						<CardHeader className="w-full">
-							<CardTitle>All Group Todos</CardTitle>
-							<CardDescription>
-								Here you can see your all Assign group todo.
-							</CardDescription>
+						<CardHeader className="w-full flex flex-col gap-3 pt-2">
+							<div>
+								<CardTitle>All Group Todos</CardTitle>
+								<CardDescription>
+									<p>
+										Here you can see your all Assign group todo, You can search
+										by your username to see if have assign todo
+									</p>
+								</CardDescription>
+							</div>
+							<div className="border w-full">
+								<FormProvider {...getAllTodoGroupProjectForm}>
+									<form
+										onSubmit={getAllTodoGroupProjectForm.handleSubmit(
+											getAllTodoGroupProjectHandler,
+										)}
+										className="flex p-2 items-center justify-between"
+									>
+										<FieldGroup>
+											<FormField
+												control={getAllTodoGroupProjectForm.control}
+												name="user_username"
+												render={({ field }) => (
+													<FormItem>
+														<FormControl>
+															<Input
+																className=" placeholder:text-xs w-70 text-sm p-1 h-9"
+																placeholder="Search By username"
+																{...field}
+															/>
+														</FormControl>
+													</FormItem>
+												)}
+											/>
+										</FieldGroup>
+										<div className="flex  items-center justify-center gap-2">
+											<Button
+												className={"w-18"}
+												type="submit"
+												disabled={isChanged() === true}
+											>
+												Search
+											</Button>
+											<Button
+												className={"w-18"}
+												type="button"
+												variant="outline"
+												onClick={clearFilter}
+											>
+												Clear
+											</Button>
+										</div>
+									</form>
+								</FormProvider>
+							</div>
 						</CardHeader>
 						<CardContent className="w-full flex gap-2">
-							{allAssignTodoIsLoading ? (
-								<div className="flex items-center justify-center w-full py-12">
-									<span className="text-sm text-muted-foreground animate-pulse">
-										Loading todos...
-									</span>
-								</div>
-							) : allAssignTodoError ? (
-								<div className="flex items-center justify-center w-full py-12">
-									<span className="text-sm text-destructive">
-										Failed to load todos. Please try again.
-									</span>
-								</div>
-							) : (
-								<AllGroupProjectAssignTodoList
-									allAssignTodoData={allAssignTodoData}
-									buildTodoPath={(assignTodoId) =>
-										`/dashboard/group/group-details/project-group-todos/${id}/todo/${assignTodoId}`
-									}
-								/>
-							)}
+							<AllGroupProjectAssignTodoList
+								allAssignTodoData={allAssignTodoData}
+								buildTodoPath={(assignTodoId) =>
+									`/dashboard/group/group-details/project-group-todos/${id}/todo/${assignTodoId}`
+								}
+							/>
 						</CardContent>
 					</div>
 				</div>
