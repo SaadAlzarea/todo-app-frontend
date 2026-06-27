@@ -1,5 +1,6 @@
 import CommonAlert from "@/common/alert.common";
 import { State } from "@/common/state.common";
+import AllGroupProjectAssignTodoList from "@/components/app/group/allGroupProjectAssignTodoList.component";
 import AssignTodoInGroupProjectWithAttachment from "@/components/app/group/assignTodoInGroupProjectWithAttachment.component";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,10 @@ import {
 } from "@/components/ui/card";
 import type { ICreateAssignTodoInGroupProjectDtoIn } from "@/domain/dtos/group/group.dto";
 import { VCreateAssignTodoInGroupProjectDtoIn } from "@/domain/validations/group/group.validation";
-import { useCreateNewGroupProjectAssignTodoWithAttachment } from "@/hooks/group/group.hook";
+import {
+	useCreateNewGroupProjectAssignTodoWithAttachment,
+	useGetAllAssignTodoInGroupProjectList,
+} from "@/hooks/group/group.hook";
 import { useAssignTodoInfo } from "@/store/createAssignTodo.store";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { ArrowLeft } from "lucide-react";
@@ -29,6 +33,7 @@ export default function ProjectGroupTodo() {
 	 * * ZUSTAND
 	 */
 	const { assignTodoInfo } = useAssignTodoInfo();
+
 	/**
 	 * * ALERT
 	 */
@@ -43,22 +48,22 @@ export default function ProjectGroupTodo() {
 	 * * GLOBAL
 	 */
 	const [assignTodoState, setAssignTodoState] = useState(false);
+
 	/**
-	 * * FORM
+	 * * FORM — only for creating a todo
 	 */
-	const assignTodoDefaultValue = {
-		group_id: undefined,
-		project_id: undefined,
-		assign_to: [],
-		title: undefined,
-		body: undefined,
-		priority: undefined,
-		status: undefined,
-		deadline: undefined,
-	};
 	const assignTodoForm = useForm<ICreateAssignTodoInGroupProjectDtoIn>({
 		resolver: typeboxResolver(VCreateAssignTodoInGroupProjectDtoIn),
-		defaultValues: assignTodoDefaultValue,
+		defaultValues: {
+			group_id: undefined,
+			project_id: undefined,
+			assign_to: [],
+			title: undefined,
+			body: undefined,
+			priority: undefined,
+			status: undefined,
+			deadline: undefined,
+		},
 		mode: "onSubmit",
 	});
 
@@ -67,28 +72,39 @@ export default function ProjectGroupTodo() {
 	 */
 	const assignTodoMutation = useCreateNewGroupProjectAssignTodoWithAttachment();
 
+	const {
+		data: allAssignTodoData,
+		error: allAssignTodoError,
+		isLoading: allAssignTodoIsLoading,
+		refetch: allAssignTodoRefetch,
+	} = useGetAllAssignTodoInGroupProjectList({
+		group_id: assignTodoInfo?.group_id,
+		project_id: id,
+	});
+
+	console.log("🔍 assignTodoInfo:", assignTodoInfo);
+	console.log("🔍 id from useParams:", id);
+	console.log("🔍 allAssignTodoData:", allAssignTodoData);
+	console.log("🔍 allAssignTodoError:", allAssignTodoError);
+	console.log("🔍 allAssignTodoIsLoading:", allAssignTodoIsLoading);
+
 	/**
 	 * * HANDLERS
 	 */
-
-	function assignTodoHandler(
-		assignTodoForm: ICreateAssignTodoInGroupProjectDtoIn,
-	) {
-		console.log(assignTodoForm);
-		assignTodoMutation.mutate(assignTodoForm, {
+	function assignTodoHandler(formData: ICreateAssignTodoInGroupProjectDtoIn) {
+		assignTodoMutation.mutate(formData, {
 			onSuccess: () => {
 				setAlertInfo({
 					title: "Create personal project todo successful!",
-					desc: `${assignTodoForm.title} Have a nice achievement..`,
+					desc: `${formData.title} Have a nice achievement..`,
 					type: "success",
 				});
-
 				setShowAlert(true);
 				setAssignTodoState(false);
+				allAssignTodoRefetch();
 
 				setTimeout(() => {
 					setShowAlert(false);
-					// navigate(home);
 				}, 3000);
 			},
 			onError: (err) => {
@@ -104,7 +120,7 @@ export default function ProjectGroupTodo() {
 	}
 
 	/**
-	 * * EFFECT
+	 * * EFFECTS
 	 */
 	useEffect(() => {
 		if (!assignTodoInfo) return;
@@ -130,12 +146,12 @@ export default function ProjectGroupTodo() {
 					AlertD={alertInfo?.desc}
 					variant={alertInfo?.type === "error" ? "destructive" : "default"}
 				/>
-				<div className=" flex flex-col gap-2">
+				<div className="flex flex-col gap-2">
 					<div className="flex items-center gap-3">
-						<div className="border h-15 ">
+						<div className="border h-15">
 							<Button
-								variant={"ghost"}
-								className={"h-full flex items-center justify-center"}
+								variant="ghost"
+								className="h-full flex items-center justify-center"
 								onClick={() => navigate(-1)}
 							>
 								<ArrowLeft />
@@ -149,7 +165,7 @@ export default function ProjectGroupTodo() {
 									add new member activities.
 								</CardDescription>
 							</CardHeader>
-							<CardContent className=" flex gap-2 ">
+							<CardContent className="flex gap-2">
 								<AssignTodoInGroupProjectWithAttachment
 									assignTodoHandler={assignTodoHandler}
 									assignTodoForm={assignTodoForm}
@@ -159,14 +175,36 @@ export default function ProjectGroupTodo() {
 							</CardContent>
 						</div>
 					</div>
+
 					<div className="w-full border p-2 flex flex-col justify-between items-center">
 						<CardHeader className="w-full">
-							<CardTitle>All Project</CardTitle>
+							<CardTitle>All Group Todos</CardTitle>
 							<CardDescription>
-								Here you can see your all your groups.
+								Here you can see your all Assign group todo.
 							</CardDescription>
 						</CardHeader>
-						<CardContent className="w-full flex gap-2 "></CardContent>
+						<CardContent className="w-full flex gap-2">
+							{allAssignTodoIsLoading ? (
+								<div className="flex items-center justify-center w-full py-12">
+									<span className="text-sm text-muted-foreground animate-pulse">
+										Loading todos...
+									</span>
+								</div>
+							) : allAssignTodoError ? (
+								<div className="flex items-center justify-center w-full py-12">
+									<span className="text-sm text-destructive">
+										Failed to load todos. Please try again.
+									</span>
+								</div>
+							) : (
+								<AllGroupProjectAssignTodoList
+									allAssignTodoData={allAssignTodoData}
+									buildTodoPath={(assignTodoId) =>
+										`/dashboard/group/group-details/project-group-todos/${id}/todo/${assignTodoId}`
+									}
+								/>
+							)}
+						</CardContent>
 					</div>
 				</div>
 			</div>

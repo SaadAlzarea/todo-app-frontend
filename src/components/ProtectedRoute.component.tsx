@@ -13,8 +13,8 @@ export default function ProtectedRoute({ children }: Props) {
 	const token = AuthenticationLocalStorage.getToken();
 	const role = AuthenticationLocalStorage.getRole();
 
-	if (!token && role) {
-		return <Navigate to={`${login}`} replace />;
+	if (!token && !role) {
+		return <Navigate to={login} replace />;
 	}
 
 	return <>{children}</>;

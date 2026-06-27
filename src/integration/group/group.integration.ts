@@ -8,6 +8,7 @@ import type {
 	IDeleteGroupDtoIn,
 	IDeleteMemberFromGroupDtoIn,
 	IGetAllAssignTodoInGroupProjectListDtoIn,
+	IGetAllAssignTodoInGroupProjectListDtoOut,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupMemberByIdDtoOut,
 	IGetAllGroupProjectsDtoIn,
@@ -82,6 +83,17 @@ class GroupIntegration {
 	) {
 		const { assignTodo } = groupProjectsIntegrationPath;
 		const res = await backendHttpClient.post(assignTodo, req);
+		return res.data;
+	}
+
+	async getAllAssignTodoInGroupProjectList(
+		req: IGetAllAssignTodoInGroupProjectListDtoIn,
+	): Promise<IApiResponse<IGetAllAssignTodoInGroupProjectListDtoOut>> {
+		const { getAllAssignTodoInGroupProjectList } = groupProjectsIntegrationPath;
+		const res = await backendHttpClient.post(
+			getAllAssignTodoInGroupProjectList,
+			req,
+		);
 		return res.data;
 	}
 }

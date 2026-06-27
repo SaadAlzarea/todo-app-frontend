@@ -7,6 +7,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "./sidebar";
+import { Link } from "react-router-dom";
 
 export function NavProjects({
 	projects,
@@ -18,7 +19,7 @@ export function NavProjects({
 			<SidebarMenu className="w-full gap-0.5">
 				{projects.map((item) => (
 					<SidebarMenuItem key={item.name}>
-						<a href={item.url}>
+						<Link to={item.url}>
 							<SidebarMenuButton
 								asChild
 								className="  px-2.5 gap-2.5 flex-row items-center hover:bg-sidebar-accent data-[state=open]:bg-sidebar-accent w-full"
@@ -26,7 +27,7 @@ export function NavProjects({
 								<item.icon className="h-4 w-4 shrink-0 text-sidebar-foreground/60" />
 								<span className="text-[13.5px]">{item.name}</span>
 							</SidebarMenuButton>
-						</a>
+						</Link>
 					</SidebarMenuItem>
 				))}
 			</SidebarMenu>

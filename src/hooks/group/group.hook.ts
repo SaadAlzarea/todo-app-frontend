@@ -7,6 +7,7 @@ import type {
 	ICreateGroupProjectDtoIn,
 	IDeleteGroupDtoIn,
 	IDeleteMemberFromGroupDtoIn,
+	IGetAllAssignTodoInGroupProjectListDtoIn,
 	IGetAllGroupMemberByIdDtoIn,
 	IGetAllGroupProjectsDtoIn,
 	IGetAllUserGroupsByUserIdDtoIn,
@@ -106,6 +107,19 @@ export const useCreateNewGroupProjectAssignTodoWithAttachment = () => {
 				await groupIntegration.createNewGroupProjectAssignTodoWithAttachment(
 					body,
 				);
+			return res.data;
+		},
+	});
+};
+
+export const useGetAllAssignTodoInGroupProjectList = (
+	body: IGetAllAssignTodoInGroupProjectListDtoIn,
+) => {
+	return useQuery({
+		queryKey: [EQueryKey.GET_ALL_ASSIGN_TODO_IN_GROUP_PROJECT],
+		queryFn: async () => {
+			const res =
+				await groupIntegration.getAllAssignTodoInGroupProjectList(body);
 			return res.data;
 		},
 	});

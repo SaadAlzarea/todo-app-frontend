@@ -31,6 +31,9 @@ import { Filter } from "lucide-react";
 import { ETodoPriority, ETodoStatus } from "@/definition/enums/todo.emun";
 import { personalProjectTodoIntegrationPath } from "@/domain/paths/apiPath/personal/personalProject.path";
 import { todoAppPath } from "@/domain/paths/appPath/todo.appPath";
+import TodoPriorityBadge from "@/components/common/todoPriorityBadge.common";
+import TodoStatusBadge from "@/components/common/todoStatusBadge.common";
+import TodoCompletedBadge from "@/components/common/todoCompletedBadge.common";
 
 type AllPersonalProjectTodoProps = {
 	allPersonalTodoData?: { data: IGetAllPersonalProjectTodosWithFilterDtoIn[] };
@@ -43,19 +46,6 @@ type AllPersonalProjectTodoProps = {
 	filter: ReactElement;
 	allPersonalProjectTodoForm: UseFormReturn<IGetAllPersonalProjectTodosWithFilterDtoIn>;
 	projectId: string;
-};
-
-const priorityVariant: Record<string, "default" | "secondary" | "destructive"> =
-	{
-		high: "destructive",
-		medium: "default",
-		low: "secondary",
-	};
-
-const statusVariant: Record<string, "default" | "secondary" | "outline"> = {
-	done: "default",
-	in_progress: "secondary",
-	pending: "outline",
 };
 
 export default function AllPersonalProjectTodo({
@@ -244,30 +234,10 @@ export default function AllPersonalProjectTodo({
 										<span className="text-sm font-medium text-foreground truncate">
 											{todo.title}
 										</span>
-										<div className="flex items-center gap-1.5">
-											{todo.priority && (
-												<Badge
-													variant={
-														priorityVariant[todo.priority] ?? "secondary"
-													}
-													className="text-[10px] px-1.5 py-0"
-												>
-													{todo.priority}
-												</Badge>
-											)}
-											{todo.status && (
-												<Badge
-													variant={statusVariant[todo.status] ?? "outline"}
-													className="text-[10px] px-1.5 py-0"
-												>
-													{todo.status}
-												</Badge>
-											)}
-											{todo?.isCompleted && (
-												<Badge className="text-[10px] px-1.5 py-0 bg-green-700 text-white">
-													Completed
-												</Badge>
-											)}
+										<div className="flex items-center gap-1.5 flex-wrap">
+											<TodoPriorityBadge priority={todo.priority} />
+											<TodoStatusBadge status={todo.status} />
+											<TodoCompletedBadge isCompleted={todo.isCompleted} />
 										</div>
 									</div>
 									{/* <i className="ti ti-chevron-right text-muted-foreground text-base shrink-0 ml-3" /> */}

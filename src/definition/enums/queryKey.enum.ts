@@ -5,4 +5,5 @@ export enum EQueryKey {
 	GET_ALL_USER_GROUPS = "get-all-user-group",
 	GET_ALL_GROUP_MEMBERS = "get-all-group-member",
 	GET_ALL_GROUP_PROJECTS = "get-all-group-projects",
+	GET_ALL_ASSIGN_TODO_IN_GROUP_PROJECT = "get-all-assign-todo-in-group-projects",
 }
